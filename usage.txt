@@ -1,0 +1,1 @@
+python train.py --data-folder dataset/panda --name experiment_1 --resolution 512 --batch-size 8 --diff-augment --fid --fid-number-of-images 256
