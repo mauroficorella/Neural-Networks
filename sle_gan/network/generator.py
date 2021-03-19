@@ -15,13 +15,12 @@ class InputBlock(tf.keras.layers.Layer):
     def __init__(self, filters: int, **kwargs):
         super().__init__(**kwargs)
 
-        self.conv2d_transpose = tf.keras.layers.Conv2DTranspose(filters=filters * 2,
-                                                                kernel_size=(4, 4),
-                                                                strides=(1, 1))
+        self.conv2d_transpose = tf.keras.layers.Conv2DTranspose(filters=filters * 2, kernel_size=(4, 4), strides=(1, 1))
         self.normalization = tf.keras.layers.BatchNormalization()
         self.glu = GLU()
 
     def call(self, inputs, **kwargs):
+        """ performs the logic of applying the layer to the input tensors"""
         x = self.conv2d_transpose(inputs)
         x = self.normalization(x)
         x = self.glu(x)
@@ -39,6 +38,7 @@ class UpSamplingBlock(tf.keras.layers.Layer):
         self.glu = GLU()
 
     def call(self, inputs, **kwargs):
+        """ performs the logic of applying the layer to the input tensors"""
         x = self.upsampling(inputs)
         x = self.conv2d(x)
         x = self.normalization(x)
@@ -65,17 +65,12 @@ class SkipLayerExcitationBlock(tf.keras.layers.Layer):
         super().__init__(**kwargs)
 
         self.pooling = tfa.layers.AdaptiveAveragePooling2D(output_size=(4, 4), data_format="channels_last")
-        self.conv2d_1 = tf.keras.layers.Conv2D(filters=input_low_res_filters,
-                                               kernel_size=(4, 4),
-                                               strides=1,
-                                               padding="valid")
+        self.conv2d_1 = tf.keras.layers.Conv2D(filters=input_low_res_filters, kernel_size=(4, 4), strides=1, padding="valid")
         self.leaky_relu = tf.keras.layers.LeakyReLU(alpha=0.1)
-        self.conv2d_2 = tf.keras.layers.Conv2D(filters=input_high_res_filters,
-                                               kernel_size=(1, 1),
-                                               strides=1,
-                                               padding="valid")
+        self.conv2d_2 = tf.keras.layers.Conv2D(filters=input_high_res_filters, kernel_size=(1, 1), strides=1, padding="valid")
 
     def call(self, inputs, **kwargs):
+        """ performs the logic of applying the layer to the input tensors"""
         x_low, x_high = inputs
 
         x = self.pooling(x_low)
@@ -93,6 +88,7 @@ class OutputBlock(tf.keras.layers.Layer):
         self.conv = tf.keras.layers.Conv2D(filters=3, kernel_size=3, strides=1, padding="same")
 
     def call(self, inputs, **kwargs):
+        """ performs the logic of applying the layer to the input tensors"""
         x = self.conv(inputs)
         x = tf.nn.tanh(x)
         return x
@@ -105,7 +101,9 @@ class Generator(tf.keras.models.Model):
 
     def __init__(self, output_resolution: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        assert output_resolution in [256, 512, 1024], "Resolution should be 256 or 512 or 1024"
+        #assert output_resolution in [256, 512, 1024], "Resolution should be 256 or 512 or 1024"
+        if output_resolution not in [256, 512, 1024]:
+            raise Exception("You have inserted a resolution value of %s. Resolution should be 256 or 512 or 1024." %output_resolution )
         self.output_resolution = output_resolution
 
         self.input_block = InputBlock(filters=1024)
@@ -133,6 +131,7 @@ class Generator(tf.keras.models.Model):
 
     @tf.function
     def call(self, inputs, training=None, mask=None):
+        """ performs the logic of applying the layer to the input tensors"""
         x = self.input_block(inputs)  # --> (B, 4, 4, 1024)
 
         x_8 = self.upsample_8(x)  # --> (B, 8, 8, 512)
