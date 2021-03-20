@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import tensorflow as tf
 
-from sle_gan.network.discriminator import Discriminator
+from discriminator import Discriminator
 
 
 class TestGeneratorModel(unittest.TestCase):

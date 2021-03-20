@@ -83,7 +83,6 @@ def center_crop_images(images, crop_resolution: int):
 
 
 def get_test_images(batch_size: int, folder: str, resolution: int):
-    dataset = create_dataset(batch_size, str(folder), resolution=resolution, use_flip_augmentation=False,
-                             shuffle_buffer_size=1)
+    dataset = create_dataset(batch_size, str(folder), resolution=resolution, use_flip_augmentation=False, shuffle_buffer_size=1)
     for x in dataset.take(1):
         return x

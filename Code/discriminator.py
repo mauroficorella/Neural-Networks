@@ -1,7 +1,8 @@
 import tensorflow as tf
 
-from sle_gan import center_crop_images
-from sle_gan.network.common_layers import GLU
+from common_layers import GLU
+from data import center_crop_images
+
 
 
 class InputBlock(tf.keras.layers.Layer):

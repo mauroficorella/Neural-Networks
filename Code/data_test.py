@@ -1,12 +1,12 @@
 import unittest
-import sle_gan
 import numpy as np
+from data import create_dataset
 
 
 class TestData(unittest.TestCase):
     def setUp(self) -> None:
         self.batch_size = 4
-        self.dataset = sle_gan.create_dataset(self.batch_size, "../dataset", resolution=1024)
+        self.dataset = create_dataset(self.batch_size, "../dataset", resolution=1024)
 
         self.image_batch = None
         for x in self.dataset.take(1):

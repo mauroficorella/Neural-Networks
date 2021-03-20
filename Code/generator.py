@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow_addons as tfa
 
-from sle_gan.network.common_layers import GLU
+from common_layers import GLU
 
 
 class InputBlock(tf.keras.layers.Layer):

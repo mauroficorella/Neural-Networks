@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import tensorflow as tf
 
-from sle_gan.network.generator import Generator
+from generator import Generator
 
 
 class TestGeneratorModel(unittest.TestCase):
