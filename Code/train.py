@@ -126,7 +126,7 @@ if args.diff_augment:
 
 signal.signal(signal.SIGBREAK, signal_handler)
 
-fid_score_best = 0
+fid_score_best = 5000
 
 for epoch in range(start_epoch, epochs):
     print(f"Epoch {epoch} -------------")
