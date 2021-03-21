@@ -50,6 +50,7 @@ def signal_handler(sig, frame):
     epoch_file = open(checkpoints_folder / "epoch_file.txt", "w")
     epoch_file.write(str(epoch))
     epoch_file.close()
+    sys.exit(0)
 
 
 physical_devices = tf.config.list_physical_devices("GPU")
@@ -123,7 +124,7 @@ diff_augment_policies = None
 if args.diff_augment:
     diff_augment_policies = "color,translation,cutout"
 
-signal.signal(signal.SIGBREAK, signal_handler)
+signal.signal(signal.SIGINT, signal_handler)
 
 fid_score_best = 5000
 
