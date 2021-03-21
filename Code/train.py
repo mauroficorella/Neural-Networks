@@ -10,13 +10,26 @@ import argparse
 import sys
 import signal
 
+import tensorflow as tf
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        # Currently, memory growth needs to be the same across GPUs
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+    except RuntimeError as e:
+        # Memory growth must be set before GPUs have been initialized
+        print(e)
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--name", type=str, default="experiment", help="Name of the experiment")
 parser.add_argument("--override", action="store_true", help="Removes previous experiment with same name")
 parser.add_argument("--data-folder", type=str, required=True, help="Folder with the images")
 parser.add_argument("--resolution", type=int, default=512, help="Either 256, 512 or 1024. Default is 512.")
-parser.add_argument("--generator-weights", type=str, default="Results/experiment_2/checkpoints/G_checkpoint.h5")
-parser.add_argument("--discriminator-weights", type=str, default="Results/experiment_2/checkpoints/D_checkpoint.h5")
+parser.add_argument("--generator-weights", type=str, default=None)
+parser.add_argument("--discriminator-weights", type=str, default=None)
 parser.add_argument("--batch-size", type=int, default=1)
 parser.add_argument("--epochs", type=int, default=1000)
 parser.add_argument("--G-learning-rate", type=float, default=2e-4, help="Learning rate for the Generator")
@@ -31,33 +44,28 @@ args = parser.parse_args()
 
 print(args)
 
+
 def signal_handler(sig, frame):
     print('You pressed Ctrl+C!')
-    #print("epoch: " + str(epoch))
-    #print('You pressed Ctrl+C!')
-
-    # open a (new) file to write
-    file = open("epoch_file.txt", "w")
-    file.write(str(epoch))
-    file.close()
-    #with open('sample.txt', 'w') as f:
-        #f.write(str(epoch))
+    epoch_file = open(checkpoints_folder / "epoch_file.txt", "w")
+    epoch_file.write(str(epoch))
+    epoch_file.close()
     sys.exit(0)
 
 
 physical_devices = tf.config.list_physical_devices("GPU")
 _ = [tf.config.experimental.set_memory_growth(x, True) for x in physical_devices]
 
-results_folder = Path("Results") / args.name  # TODO rinominare la cartella fisica
-"""if results_folder.is_dir():
-    if args.override:
-        shutil.rmtree(results_folder)
-    else:
-        raise FileExistsError("The selected experiment name already exists, "
-                              "change it or select to override it (--override)")"""
-
-
+results_folder = Path("Results") / args.name
 checkpoints_folder = results_folder / "checkpoints"
+
+if results_folder.is_dir():
+    args.generator_weights = results_folder / "checkpoints/G_checkpoint.h5"
+    args.discriminator_weights = results_folder / "checkpoints/D_checkpoint.h5"
+    with open(checkpoints_folder / "epoch_file.txt") as f:
+        start_epoch = int(f.read())
+
+
 if not checkpoints_folder.is_dir():
     checkpoints_folder.mkdir(parents=True)
 tensorboard_logs_folder = results_folder / "tensorboard_logs"
@@ -85,14 +93,12 @@ sample_D_output = D.initialize(batch_size)
 if args.discriminator_weights is not None:
     D.built = True
     D.load_weights(args.discriminator_weights)
-    with open("epoch_file.txt") as f:
-        start_epoch = int(f.read())
     print("Weights are loaded for D")
 else:
     start_epoch = 0
 print(f"[Model D] real_fake output shape: {sample_D_output[0].shape}")
-print(f"[Model D] image output shape{sample_D_output[1].shape}")
-print(f"[Model D] image part output shape{sample_D_output[2].shape}")
+print(f"[Model D] Image output shape: {sample_D_output[1].shape}")
+print(f"[Model D] Image part output shape: {sample_D_output[2].shape}")
 
 G_optimizer = tf.optimizers.Adam(learning_rate=args.G_learning_rate)
 D_optimizer = tf.optimizers.Adam(learning_rate=args.D_learning_rate)
@@ -118,7 +124,9 @@ diff_augment_policies = None
 if args.diff_augment:
     diff_augment_policies = "color,translation,cutout"
 
-signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGBREAK, signal_handler)
+
+fid_score_best = 0
 
 for epoch in range(start_epoch, epochs):
     print(f"Epoch {epoch} -------------")
@@ -139,11 +147,11 @@ for epoch in range(start_epoch, epochs):
 
         if step % 100 == 0 and step != 0:
             print(f"\tStep {step} - "
-                  f"G loss {G_loss_metric.result():.4f} | "
-                  f"D loss {D_loss_metric.result():.4f} | "
-                  f"D realfake loss {D_real_fake_loss_metric.result():.4f} | "
-                  f"D I recon loss {D_I_reconstruction_loss_metric.result():.4f} | "
-                  f"D I part recon loss {D_I_part_reconstruction_loss_metric.result():.4f}")
+                  f"G loss value: {G_loss_metric.result():.4f} | "
+                  f"D loss value: {D_loss_metric.result():.4f} | "
+                  f"D real_fake loss value: {D_real_fake_loss_metric.result():.4f} | "
+                  f"D I recon loss value: {D_I_reconstruction_loss_metric.result():.4f} | "
+                  f"D I part recon loss value: {D_I_part_reconstruction_loss_metric.result():.4f}")
 
     if args.fid:
         if epoch % args.fid_frequency == 0:
@@ -163,12 +171,12 @@ for epoch in range(start_epoch, epochs):
     tf.summary.scalar("D_loss/D_I_reconstruction_loss", D_I_reconstruction_loss_metric.result(), epoch)
     tf.summary.scalar("D_loss/D_I_part_reconstruction_loss", D_I_part_reconstruction_loss_metric.result(), epoch)
 
-    print(f"Epoch {epoch} - "
-          f"G loss {G_loss_metric.result():.4f} | "
-          f"D loss {D_loss_metric.result():.4f} | "
-          f"D realfake loss {D_real_fake_loss_metric.result():.4f} | "
-          f"D I recon loss {D_I_reconstruction_loss_metric.result():.4f} | "
-          f"D I part recon loss {D_I_part_reconstruction_loss_metric.result():.4f}")
+    print(f"Epoch number: {epoch} - "
+          f"G loss value: {G_loss_metric.result():.4f} | "
+          f"D loss value: {D_loss_metric.result():.4f} | "
+          f"D real_fake loss value: {D_real_fake_loss_metric.result():.4f} | "
+          f"D I recon loss: {D_I_reconstruction_loss_metric.result():.4f} | "
+          f"D I part recon loss: {D_I_part_reconstruction_loss_metric.result():.4f}")
 
     G_loss_metric.reset_states()
     D_loss_metric.reset_states()
@@ -176,9 +184,11 @@ for epoch in range(start_epoch, epochs):
     D_I_part_reconstruction_loss_metric.reset_states()
     D_I_reconstruction_loss_metric.reset_states()
 
-    # TODO: save weights only when the FID score gets better
-    G.save_weights(str(checkpoints_folder / "G_checkpoint.h5"))
-    D.save_weights(str(checkpoints_folder / "D_checkpoint.h5"))
+    if args.fid:
+        if fid_score < fid_score_best:
+            fid_score_best = fid_score
+            G.save_weights(str(checkpoints_folder / "G_checkpoint.h5"))
+            D.save_weights(str(checkpoints_folder / "D_checkpoint.h5"))
 
     # Generate test images
     generated_images = G(test_input_for_generation, training=False)
@@ -195,6 +205,6 @@ for epoch in range(start_epoch, epochs):
 
     if epoch == epochs-1:
         print("ciao")
-        file = open("epoch_file.txt", "w+")
+        file = open(checkpoints_folder / "epoch_file.txt", "w+")
         file.write(str(epoch))
         file.close()
