@@ -50,7 +50,6 @@ def signal_handler(sig, frame):
     epoch_file = open(checkpoints_folder / "epoch_file.txt", "w")
     epoch_file.write(str(epoch))
     epoch_file.close()
-    sys.exit(0)
 
 
 physical_devices = tf.config.list_physical_devices("GPU")
