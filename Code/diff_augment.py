@@ -1,44 +1,39 @@
-# Differentiable Augmentation for Data-Efficient GAN Training
-# Shengyu Zhao, Zhijian Liu, Ji Lin, Jun-Yan Zhu, and Song Han
-# https://arxiv.org/pdf/2006.10738
-# https://github.com/mit-han-lab/data-efficient-gans/blob/master/DiffAugment_tf.py
-
 import tensorflow as tf
 
 
-def diff_augment(x, policy: str = None, channels_first=False):
+def differentialAugmentation(x, policy: str = None, channels_first=False):
     if policy:
         if channels_first:
             x = tf.transpose(x, [0, 2, 3, 1])
         for p in policy.split(','):
-            for f in AUGMENT_FNS[p]:
+            for f in augment_functions[p]:
                 x = f(x)
         if channels_first:
             x = tf.transpose(x, [0, 3, 1, 2])
     return x
 
 
-def rand_brightness(x):
+def randomBrightness(x):
     magnitude = tf.random.uniform([tf.shape(x)[0], 1, 1, 1]) - 0.5
     x = x + magnitude
     return x
 
 
-def rand_saturation(x):
+def randomSaturation(x):
     magnitude = tf.random.uniform([tf.shape(x)[0], 1, 1, 1]) * 2
     x_mean = tf.reduce_mean(x, axis=3, keepdims=True)
     x = (x - x_mean) * magnitude + x_mean
     return x
 
 
-def rand_contrast(x):
+def randomContrast(x):
     magnitude = tf.random.uniform([tf.shape(x)[0], 1, 1, 1]) + 0.5
     x_mean = tf.reduce_mean(x, axis=[1, 2, 3], keepdims=True)
     x = (x - x_mean) * magnitude + x_mean
     return x
 
 
-def rand_translation(x, ratio=0.125):
+def randomTranslation(x, ratio=0.125):
     batch_size = tf.shape(x)[0]
     image_size = tf.shape(x)[1:3]
     shift = tf.cast(tf.cast(image_size, tf.float32) * ratio + 0.5, tf.int32)
@@ -54,7 +49,7 @@ def rand_translation(x, ratio=0.125):
     return x
 
 
-def rand_cutout(x, ratio=0.5):
+def randomCutout(x, ratio=0.5):
     batch_size = tf.shape(x)[0]
     image_size = tf.shape(x)[1:3]
     cutout_size = tf.cast(tf.cast(image_size, tf.float32) * ratio + 0.5, tf.int32)
@@ -77,8 +72,8 @@ def rand_cutout(x, ratio=0.5):
     return x
 
 
-AUGMENT_FNS = {
-    'color': [rand_brightness, rand_saturation, rand_contrast],
-    'translation': [rand_translation],
-    'cutout': [rand_cutout],
+augment_functions = {
+    'color': [randomBrightness, randomSaturation, randomContrast],
+    'translation': [randomTranslation],
+    'cutout': [randomCutout],
 }
