@@ -185,7 +185,7 @@ for epoch in range(start_epoch, epochs):
     D_I_reconstruction_loss_metric.reset_states()
 
     if args.fid:
-        if fid_score < fid_score_best:
+        if fid_score < fid_score_best: #TODO scrivere il fid in un file
             fid_score_best = fid_score
             G.save_weights(str(checkpoints_folder / "G_checkpoint.h5"))
             D.save_weights(str(checkpoints_folder / "D_checkpoint.h5"))
