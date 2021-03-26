@@ -1,11 +1,10 @@
 import shutil
 from pathlib import Path
 import tensorflow as tf
-from data import cropCenterImages, getInputNoise, denormalizeImages
-from diff_augment import differentialAugmentation
+from dataset_utils import cropCenterImages, getInputNoise, denormalizeImages
 from GAN import discrRealFakeLoss, discrReconstructionLoss, generatorLoss
-from visualization import writeImagesOnDisk
-from fid import calculateFid
+from utils import writeImagesOnDisk, differentialAugmentation
+from FID_utils import calculateFid
 
 
 @tf.function

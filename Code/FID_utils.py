@@ -13,12 +13,12 @@ def getImages(image_path):
     return image
 
 
-def createTempDataset(file_paths: list, batch_size: int, image_height: int = None, image_width: int = None):
-    dataset = tf.data.Dataset.from_tensor_slices(file_paths)
+def createTempDataset(paths: list, batch: int, image_height: int = None, image_width: int = None):
+    dataset = tf.data.Dataset.from_tensor_slices(paths)
     dataset = dataset.map(getImages)
     if image_width is not None and image_height is not None:
         dataset = dataset.map(partial(tf.image.resize, size=(image_height, image_width)))
-    dataset = dataset.batch(batch_size=batch_size)
+    dataset = dataset.batch(batch_size=batch)
     return dataset
 
 

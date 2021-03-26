@@ -1,6 +1,6 @@
 import tensorflow as tf
 import tensorflow_addons as tfa
-from data import cropCenterImages
+from dataset_utils import cropCenterImages
 
 
 # GATED LINEAR UNIT

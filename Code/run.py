@@ -1,9 +1,9 @@
 from pathlib import Path
-from data import *
+from dataset_utils import *
 from GAN import Generator, Discriminator
-from fid import InceptionModel
-from training_routine import train, evaluate
-from visualization import saveImages
+from FID_utils import InceptionModel
+from training import train, evaluate
+from utils import saveImages
 import argparse
 import sys
 import signal
@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--name", type=str, default="experiment", help="Name of the experiment")
 parser.add_argument("--override", action="store_true", help="Removes previous experiment with same name")
 parser.add_argument("--data-folder", type=str, required=True, help="Folder with the images")
-parser.add_argument("--resolution", type=int, default=512, help="Either 256, 512 or 1024. Default is 512.")
+parser.add_argument("--resolution", type=int, default=256, help="Either 256, 512 or 1024. Default is 512.")
 parser.add_argument("--batch-size", type=int, default=1)
 parser.add_argument("--epochs", type=int, default=1000)
 parser.add_argument("--G-learning-rate", type=float, default=2e-4, help="Learning rate for the Generator")
@@ -65,8 +65,8 @@ batch_size = args.batch_size
 epochs = args.epochs
 dataset_folder = args.data_folder
 
-dataset = getDataset(batch_size=batch_size, folder=dataset_folder, resolution=resolution,
-                     use_flip_augmentation=True, image_extension=args.img_extension, shuffle_buffer_size=500)
+dataset = getDataset(batch=batch_size, dataset_folder=dataset_folder, resolution=resolution,
+                     flip_augment=True, img_extension=args.img_extension, size_buff_shuffle=500)
 
 G = Generator(resolution)
 sample_G_output = G.initialize(batch_size)
