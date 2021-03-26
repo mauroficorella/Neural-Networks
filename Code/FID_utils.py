@@ -4,6 +4,26 @@ import tensorflow as tf
 from scipy import linalg
 
 
+def getEncodings(model: tf.keras.models.Model, dataset: tf.data.Dataset, max_num_imgs: int):
+    enc_img_2048 = np.zeros((max_num_imgs, 2048))
+
+    for i, batch_img in enumerate(dataset):
+        batch = np.shape(batch_img)[0]
+        encodings = model(batch_img)
+
+        start_index = i * batch
+        end_index = start_index + batch
+        enc_img_2048[start_index:end_index] = encodings
+
+    return enc_img_2048
+
+
+def getEncodingStats(encodings):
+    mu = np.mean(encodings, axis=0)
+    sigma = np.cov(encodings, rowvar=False)
+    return mu, sigma
+
+
 @tf.function
 def getImages(image_path):
     image = tf.io.read_file(image_path)
@@ -13,42 +33,50 @@ def getImages(image_path):
     return image
 
 
-def createTempDataset(paths: list, batch: int, image_height: int = None, image_width: int = None):
+def createTempDataset(paths: list, batch: int, img_height: int = None, img_width: int = None):
     dataset = tf.data.Dataset.from_tensor_slices(paths)
     dataset = dataset.map(getImages)
-    if image_width is not None and image_height is not None:
-        dataset = dataset.map(partial(tf.image.resize, size=(image_height, image_width)))
+    if img_width is not None and img_height is not None:
+        dataset = dataset.map(partial(tf.image.resize, size=(img_height, img_width)))
     dataset = dataset.batch(batch_size=batch)
     return dataset
 
 
-def getEncodings(model: tf.keras.models.Model, dataset: tf.data.Dataset, max_nb_images: int):
-    image_encodings_2048 = np.zeros((max_nb_images, 2048))
-
-    for i, image_batch in enumerate(dataset):
-        batch_size = np.shape(image_batch)[0]
-        encodings = model(image_batch)
-
-        start_index = i * batch_size
-        end_index = start_index + batch_size
-        image_encodings_2048[start_index:end_index] = encodings
-
-    return image_encodings_2048
-
-
-def getEncodingStats(encodings):
-    mu = np.mean(encodings, axis=0)
-    sigma = np.cov(encodings, rowvar=False)
-    return mu, sigma
-
-
-def getFidScore(real_mu, real_sigma, fake_mu, fake_sigma):  # from mu and sigma
-    ssdiff = np.sum((real_mu - fake_mu) ** 2.0)
-    covmean = linalg.sqrtm(real_sigma.dot(fake_sigma))
+def getFIDScore(mu_real, sigma_real, mu_fake, sigma_fake):  # from mu and sigma
+    # calculate sum squared difference between means
+    ssdiff = np.sum((mu_real - mu_fake) ** 2.0)
+    # calculate sqrt of product between cov
+    covmean = linalg.sqrtm(sigma_real.dot(sigma_fake))
+    # check and correct imaginary numbers from sqrt
     if np.iscomplexobj(covmean):
         covmean = covmean.real
-    fid_score = ssdiff + np.trace(real_sigma) + np.trace(fake_sigma) - 2 * np.trace(covmean)
-    return fid_score
+    # calculate score
+    FID_score = ssdiff + np.trace(sigma_real) + np.trace(sigma_fake) - 2 * np.trace(covmean)
+    return FID_score
+
+
+def calculateFID(inception_model,
+                 real_paths: list,
+                 fake_paths: list,
+                 batch: int = 1,
+                 img_height: int = None,
+                 img_width: int = None):
+    # Just to make sure we have the same number of images from both category
+    imgs_num = min(len(real_paths), len(fake_paths))
+    real_paths = real_paths[:imgs_num]
+    fake_paths = fake_paths[:imgs_num]
+
+    dataset_real = createTempDataset(real_paths, batch, img_height, img_width)
+    real_encodings = getEncodings(inception_model, dataset_real, imgs_num)
+    mu_real, sigma_real = getEncodingStats(real_encodings)
+
+    dataset_fake = createTempDataset(fake_paths, batch, img_height, img_width)
+    fake_encodings = getEncodings(inception_model, dataset_fake, imgs_num)
+    mu_fake, sigma_fake = getEncodingStats(fake_encodings)
+
+    FID_score = getFIDScore(mu_real, sigma_real, mu_fake, sigma_fake)
+
+    return FID_score
 
 
 class InceptionModel(tf.keras.models.Model):
@@ -62,27 +90,3 @@ class InceptionModel(tf.keras.models.Model):
     @tf.function
     def call(self, inputs, training=None, mask=None):
         return self.model(inputs, training=False)
-
-
-def calculateFid(inception_model,
-                 real_paths: list,
-                 fake_paths: list,
-                 batch_size: int = 1,
-                 image_height: int = None,
-                 image_width: int = None):
-    # Just to make sure we have the same number of images from both category
-    nb_of_images = min(len(real_paths), len(fake_paths))
-    real_paths = real_paths[:nb_of_images]
-    fake_paths = fake_paths[:nb_of_images]
-
-    read_dataset = createTempDataset(real_paths, batch_size, image_height, image_width)
-    real_encodings = getEncodings(inception_model, read_dataset, nb_of_images)
-    real_mu, real_sigma = getEncodingStats(real_encodings)
-
-    fake_dataset = createTempDataset(fake_paths, batch_size, image_height, image_width)
-    fake_encodings = getEncodings(inception_model, fake_dataset, nb_of_images)
-    fake_mu, fake_sigma = getEncodingStats(fake_encodings)
-
-    fid_score = getFidScore(real_mu, real_sigma, fake_mu, fake_sigma)
-
-    return fid_score

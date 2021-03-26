@@ -4,7 +4,7 @@ import tensorflow as tf
 from dataset_utils import cropCenterImages, getInputNoise, denormalizeImages
 from GAN import discrRealFakeLoss, discrReconstructionLoss, generatorLoss
 from utils import writeImagesOnDisk, differentialAugmentation
-from FID_utils import calculateFid
+from FID_utils import calculateFID
 
 
 @tf.function
@@ -74,12 +74,12 @@ def evaluate(inception_model: tf.keras.models.Model,
         _, fake_images_file_paths = writeImagesOnDisk(fake_images, folder=None)
         fake_paths.extend(fake_images_file_paths)
 
-    fid_score = calculateFid(inception_model,
+    fid_score = calculateFID(inception_model,
                              real_paths,
                              fake_paths,
-                             batch_size=batch_size,
-                             image_height=image_height,
-                             image_width=image_width)
+                             batch=batch_size,
+                             img_height=image_height,
+                             img_width=image_width)
 
     # Cleanup, remove the folders with all the written files
     shutil.rmtree(Path(real_paths[0]).parent)
