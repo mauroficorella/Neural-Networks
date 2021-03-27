@@ -49,6 +49,7 @@ D_learning_rate = args.D_learning_rate
 FID = args.FID
 FID_freq = args.FID_freq
 FID_num_of_imgs = args.FID_num_of_imgs
+diff_augment = args.diff_augment
 
 
 def signalHandler(sig, frame):
@@ -114,11 +115,11 @@ if FID:
     FID_inception_model = InceptionModel(height=resolution, width=resolution)
 
 test_input_size = 25
-test_input_for_generation = getInputNoise(test_input_size)
+test_input_generation = getInputNoise(test_input_size)
 test_images = getTestImages(test_input_size, dataset_folder, resolution, img_extension)
 
-tb_file_writer = tf.summary.create_file_writer(str(tensorboard_logs_folder))
-tb_file_writer.set_as_default()
+tensorboard_file_writer = tf.summary.create_file_writer(str(tensorboard_logs_folder))
+tensorboard_file_writer.set_as_default()
 
 G_loss_metric = tf.keras.metrics.Mean()
 D_loss_metric = tf.keras.metrics.Mean()
@@ -127,25 +128,25 @@ D_I_reconstruction_loss_metric = tf.keras.metrics.Mean()
 D_I_part_reconstruction_loss_metric = tf.keras.metrics.Mean()
 
 diff_augment_policies = None
-if args.diff_augment:
+if diff_augment:
     diff_augment_policies = "color,translation,cutout"
 
 signal.signal(signal.SIGINT, signalHandler)
 
-fid_score_best = 5000
+FID_score_best = 5000
 
 for epoch in range(start_epoch, epochs):
     start = time.perf_counter()
     print(f"Epoch {epoch} -------------")
 
     # TRAINING PHASE
-    for step, image_batch in enumerate(dataset):
+    for step, batch_img in enumerate(dataset):
         G_loss, D_loss, D_real_fake_loss, D_I_reconstruction_loss, D_I_part_reconstruction_loss = train(
             G=G,
             D=D,
             optim_G=G_optim,
             optim_D=D_optim,
-            images=image_batch,
+            images=batch_img,
             diff_augm_policies=diff_augment_policies)
 
         G_loss_metric(G_loss)
@@ -155,17 +156,17 @@ for epoch in range(start_epoch, epochs):
         D_I_part_reconstruction_loss_metric(D_I_part_reconstruction_loss)
 
     # TESTING PHASE
-    if args.FID:
-        if epoch % args.FID_freq == 0:
-            fid_score = evaluate(inception_model=FID_inception_model,
+    if FID:
+        if epoch % FID_freq == 0:
+            FID_score = evaluate(inception_model=FID_inception_model,
                                  dataset=dataset,
                                  G=G,
                                  batch=batch,
                                  img_height=resolution,
                                  img_width=resolution,
-                                 num_imgs=args.fid_num_of_imgs)
-            print(f"[FID] {fid_score:.2f}")
-            tf.summary.scalar("FID_score", fid_score, epoch)
+                                 num_imgs=FID_num_of_imgs)
+            print(f"[FID] {FID_score:.2f}.")
+            tf.summary.scalar("FID_score", FID_score, epoch)
 
     tf.summary.scalar("G_loss/G_loss", G_loss_metric.result(), epoch)
     tf.summary.scalar("D_loss/D_loss", D_loss_metric.result(), epoch)
@@ -175,12 +176,12 @@ for epoch in range(start_epoch, epochs):
 
     elapsed = time.perf_counter() - start
     print(f"Epoch number: {epoch} - "
-          f"G loss value: {G_loss_metric.result():.4f} | "
-          f"D loss value: {D_loss_metric.result():.4f} | "
-          f"D real_fake loss value: {D_real_fake_loss_metric.result():.4f} | "
+          f"G Loss value: {G_loss_metric.result():.4f} | "
+          f"D Loss value: {D_loss_metric.result():.4f} | "
+          f"D Real_fake loss value: {D_real_fake_loss_metric.result():.4f} | "
           f"D I recon loss: {D_I_reconstruction_loss_metric.result():.4f} | "
           f"D I part recon loss: {D_I_part_reconstruction_loss_metric.result():.4f} | "
-          f"Elapsed time:{elapsed:.3f} seconds")
+          f"Elapsed time: {elapsed:.3f} seconds.")
 
     G_loss_metric.reset_states()
     D_loss_metric.reset_states()
@@ -189,24 +190,26 @@ for epoch in range(start_epoch, epochs):
     D_I_reconstruction_loss_metric.reset_states()
 
     # SAVE THE WEIGHTS ONLY IF THE FID SCORE IS BETTER (LOWER) THAN THE PREVIOUS ONE
-    if args.FID:
-        if fid_score < fid_score_best:
-            fid_score_best = fid_score
-            G.save_weights(str(checkpoints_folder / "G_checkpoint.h5"))
-            D.save_weights(str(checkpoints_folder / "D_checkpoint.h5"))
+    if FID:
+        if FID_score < FID_score_best:
+            FID_score_best = FID_score
+            G_checkpoint_path = str(checkpoints_folder / "G_checkpoint.h5")
+            D_checkpoint_path = str(checkpoints_folder / "D_checkpoint.h5")
+            G.save_weights(G_checkpoint_path)
+            D.save_weights(D_checkpoint_path)
 
     # Generate test images
-    generated_images = G(test_input_for_generation, training=False)
-    generated_images = denormalizeImages(generated_images, dtype=tf.uint8).numpy()
-    saveImages(epoch, generated_images, out_folder / "generated_images", 5, 5)
+    generated_imgs = G(test_input_generation, training=False)
+    generated_imgs = denormalizeImages(generated_imgs, dtype=tf.uint8).numpy()
+    saveImages(epoch, generated_imgs, out_folder / "Generated_images", 5, 5)
 
     # Generate reconstructions from Discriminator
-    _, decoded_images, decoded_part_images = D(test_images, training=False)
-    decoded_images = denormalizeImages(decoded_images, dtype=tf.uint8).numpy()
-    decoded_part_images = denormalizeImages(decoded_part_images, dtype=tf.uint8).numpy()
-    saveImages(epoch, decoded_images, out_folder / "reconstructed_whole_images", 5, 5)
-    saveImages(epoch, decoded_part_images,
-               out_folder / "reconstructed_part_images", 5, 5)
+    _, decoded_imgs, decoded_part_imgs = D(test_images, training=False)
+    decoded_imgs = denormalizeImages(decoded_imgs, dtype=tf.uint8).numpy()
+    decoded_part_imgs = denormalizeImages(decoded_part_imgs, dtype=tf.uint8).numpy()
+    saveImages(epoch, decoded_imgs, out_folder / "Reconstructed_whole_images", 5, 5)
+    saveImages(epoch, decoded_part_imgs,
+               out_folder / "Reconstructed_part_images", 5, 5)
 
     if epoch == epochs - 1:
         file = open(checkpoints_folder / "epoch_file.txt", "w+")

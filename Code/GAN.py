@@ -10,12 +10,9 @@ class GLU(tf.keras.layers.Layer):
 
     def call(self, inputs, **kwargs):
         channels = tf.shape(inputs)[-1]
-        nb_split_channels = channels // 2
+        num_split_channels = channels // 2
 
-        a = inputs[:, :, :, :nb_split_channels]
-        b = inputs[:, :, :, nb_split_channels:]
-
-        return a * tf.nn.sigmoid(b)
+        return inputs[:, :, :, :num_split_channels] * tf.nn.sigmoid(inputs[:, :, :, num_split_channels:])
 
 
 # LOSSES
