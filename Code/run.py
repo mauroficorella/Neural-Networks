@@ -11,25 +11,44 @@ import time
 import tensorflow as tf
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--name", type=str, default="experiment", help="Name of the experiment")
-parser.add_argument("--override", action="store_true", help="Removes previous experiment with same name")
-parser.add_argument("--data-folder", type=str, required=True, help="Folder with the images")
-parser.add_argument("--resolution", type=int, default=256, help="Either 256, 512 or 1024. Default is 512.")
-parser.add_argument("--batch-size", type=int, default=1)
-parser.add_argument("--epochs", type=int, default=1000)
-parser.add_argument("--G-learning-rate", type=float, default=2e-4, help="Learning rate for the Generator")
-parser.add_argument("--D-learning-rate", type=float, default=2e-4, help="Learning rate for the Discriminator")
-parser.add_argument("--diff-augment", action="store_true", help="Apply diff augmentation")
-parser.add_argument("--fid", action="store_true", help="If this is used, FID will be evaluated")
-parser.add_argument("--fid-frequency", type=int, default=1, help="FID will be evaluated at this frequency (epochs)")
-parser.add_argument("--fid-number-of-images", type=int,
-                    default=128, help="This many images will be used for the FID calculation")
+
 parser.add_argument("--img_extension", type=str, default="jpg",
-                    help="Extension of the images used for the training (png, jpg, jpeg)")
+                    help="Extension of the images used for the training (png, jpg, jpeg). Default is jpg.")
+parser.add_argument("--resolution", type=int, default=256,
+                    help="Resolution can be either 256, 512 or 1024. Default resolution value is 256.")
+parser.add_argument("--batch", type=int, default=1,
+                    help="Batch size to use (if you have a GPU with less than 8GB of VRAM, set this value"
+                         "either on 1,2 or 4).")
+parser.add_argument("--epochs", type=int, default=1000,
+                    help="Epoch number to use during the training.")
+parser.add_argument("--dataset-folder", type=str, required=True, help="Folder containing the dataset images.")
+parser.add_argument("--out-folder-name", type=str, default="Experiment",
+                    help="Name of the output folder regarding the current experiment.")
+parser.add_argument("--overwrite", action="store_true",
+                    help="Overwrites previous output folders with same name if already exists.")
+parser.add_argument("--G-learning-rate", type=float, default=2e-4, help="Generator learning rate.")
+parser.add_argument("--D-learning-rate", type=float, default=2e-4, help="Discriminator learning rate.")
+parser.add_argument("--diff-augment", action="store_true",
+                    help="Tell whether to apply or not differentiable augmentation.")
+parser.add_argument("--FID", action="store_true", help="This tells whether to evaluate or not the FID value.")
+parser.add_argument("--FID-freq", type=int, default=1,
+                    help="This tells at what frequency (in terms of epochs) the FID value will be evaluated.")
+parser.add_argument("--FID-num-of-imgs", type=int, default=128,
+                    help="This tells how many images will be used for the FID value calculation.")
 
 args = parser.parse_args()
-
 print(args)
+
+img_extension = args.img_extension
+resolution = args.resolution
+batch = args.batch
+epochs = args.epochs
+dataset_folder = args.dataset_folder
+G_learning_rate = args.G_learning_rate
+D_learning_rate = args.D_learning_rate
+FID = args.FID
+FID_freq = args.FID_freq
+FID_num_of_imgs = args.FID_num_of_imgs
 
 
 def signalHandler(sig, frame):
@@ -40,64 +59,63 @@ def signalHandler(sig, frame):
     sys.exit(0)
 
 
-physical_devices = tf.config.list_physical_devices("GPU")
-_ = [tf.config.experimental.set_memory_growth(x, True) for x in physical_devices]
+GPUs = tf.config.list_physical_devices("GPU")
+_ = [tf.config.experimental.set_memory_growth(x, True) for x in GPUs]
 
-results_folder = Path("Results") / args.name
-checkpoints_folder = results_folder / "checkpoints"
 
-generator_weights = None
-discriminator_weights = None
-if results_folder.is_dir():
-    generator_weights = results_folder / "checkpoints/G_checkpoint.h5"
-    discriminator_weights = results_folder / "checkpoints/D_checkpoint.h5"
+G_weights = None
+D_weights = None
+
+out_folder = Path("Results") / args.out_folder_name
+checkpoints_folder = out_folder / "Checkpoints"
+if out_folder.is_dir():
+    G_weights = out_folder / "Checkpoints/G_checkpoint.h5"
+    D_weights = out_folder / "Checkpoints/D_checkpoint.h5"
     with open(checkpoints_folder / "epoch_file.txt") as f:
         start_epoch = int(f.read())
-
 if not checkpoints_folder.is_dir():
     checkpoints_folder.mkdir(parents=True)
-tensorboard_logs_folder = results_folder / "tensorboard_logs"
+
+tensorboard_logs_folder = out_folder / "Tensorboard_logs"
 if not tensorboard_logs_folder.is_dir():
     tensorboard_logs_folder.mkdir(parents=True)
 
-resolution = args.resolution
-batch_size = args.batch_size
-epochs = args.epochs
-dataset_folder = args.data_folder
 
-dataset = getDataset(batch=batch_size, dataset_folder=dataset_folder, resolution=resolution,
+dataset = getDataset(batch=batch, dataset_folder=dataset_folder, resolution=resolution,
                      flip_augment=True, img_extension=args.img_extension, size_buff_shuffle=500)
 
 G = Generator(resolution)
-sample_G_output = G.initialize(batch_size)
-if generator_weights is not None:
+G_out = G.initialize(batch)
+if G_weights is not None:
     G.built = True
-    G.load_weights(generator_weights)
-    print("Weights are loaded for G")
-print(f"[Model G] output shape: {sample_G_output.shape}")
-
-D = Discriminator(resolution)
-sample_D_output = D.initialize(batch_size)
-if discriminator_weights is not None:
-    D.built = True
-    D.load_weights(discriminator_weights)
-    print("Weights are loaded for D")
+    G.load_weights(G_weights)
+    print("G weights loaded successfully.")
 else:
     start_epoch = 0
-print(f"[Model D] real_fake output shape: {sample_D_output[0].shape}")
-print(f"[Model D] Image output shape: {sample_D_output[1].shape}")
-print(f"[Model D] Image part output shape: {sample_D_output[2].shape}")
+print(f"[G] Output shape: {G_out.shape}.")
 
-G_optimizer = tf.optimizers.Adam(learning_rate=args.G_learning_rate)
-D_optimizer = tf.optimizers.Adam(learning_rate=args.D_learning_rate)
+D = Discriminator(resolution)
+D_out = D.initialize(batch)
+if D_weights is not None:
+    D.built = True
+    D.load_weights(D_weights)
+    print("D weights loaded successfully.")
+else:
+    start_epoch = 0
+print(f"[D] Real_fake output shape: {D_out[0].shape}.")
+print(f"[D] Image output shape: {D_out[1].shape}.")
+print(f"[D] Image part output shape: {D_out[2].shape}.")
 
-if args.fid:
+G_optim = tf.optimizers.Adam(learning_rate=G_learning_rate)
+D_optim = tf.optimizers.Adam(learning_rate=D_learning_rate)
+
+if FID:
     # Model for the FID calculation
-    fid_inception_model = InceptionModel(height=resolution, width=resolution)
+    FID_inception_model = InceptionModel(height=resolution, width=resolution)
 
 test_input_size = 25
 test_input_for_generation = getInputNoise(test_input_size)
-test_images = getTestImages(test_input_size, dataset_folder, resolution, args.img_extension)
+test_images = getTestImages(test_input_size, dataset_folder, resolution, img_extension)
 
 tb_file_writer = tf.summary.create_file_writer(str(tensorboard_logs_folder))
 tb_file_writer.set_as_default()
@@ -125,10 +143,10 @@ for epoch in range(start_epoch, epochs):
         G_loss, D_loss, D_real_fake_loss, D_I_reconstruction_loss, D_I_part_reconstruction_loss = train(
             G=G,
             D=D,
-            G_optimizer=G_optimizer,
-            D_optimizer=D_optimizer,
+            optim_G=G_optim,
+            optim_D=D_optim,
             images=image_batch,
-            diff_augmenter_policies=diff_augment_policies)
+            diff_augm_policies=diff_augment_policies)
 
         G_loss_metric(G_loss)
         D_loss_metric(D_loss)
@@ -137,15 +155,15 @@ for epoch in range(start_epoch, epochs):
         D_I_part_reconstruction_loss_metric(D_I_part_reconstruction_loss)
 
     # TESTING PHASE
-    if args.fid:
-        if epoch % args.fid_frequency == 0:
-            fid_score = evaluate(inception_model=fid_inception_model,
+    if args.FID:
+        if epoch % args.FID_freq == 0:
+            fid_score = evaluate(inception_model=FID_inception_model,
                                  dataset=dataset,
                                  G=G,
-                                 batch_size=batch_size,
-                                 image_height=resolution,
-                                 image_width=resolution,
-                                 nb_of_images_to_use=args.fid_number_of_images)
+                                 batch=batch,
+                                 img_height=resolution,
+                                 img_width=resolution,
+                                 num_imgs=args.fid_num_of_imgs)
             print(f"[FID] {fid_score:.2f}")
             tf.summary.scalar("FID_score", fid_score, epoch)
 
@@ -170,8 +188,8 @@ for epoch in range(start_epoch, epochs):
     D_I_part_reconstruction_loss_metric.reset_states()
     D_I_reconstruction_loss_metric.reset_states()
 
-    # SAVE THE FID SCORE ONLY IF IS BETTER (LOWER) THAN THE PREVIOUS SAVED ONE
-    if args.fid:
+    # SAVE THE WEIGHTS ONLY IF THE FID SCORE IS BETTER (LOWER) THAN THE PREVIOUS ONE
+    if args.FID:
         if fid_score < fid_score_best:
             fid_score_best = fid_score
             G.save_weights(str(checkpoints_folder / "G_checkpoint.h5"))
@@ -180,15 +198,15 @@ for epoch in range(start_epoch, epochs):
     # Generate test images
     generated_images = G(test_input_for_generation, training=False)
     generated_images = denormalizeImages(generated_images, dtype=tf.uint8).numpy()
-    saveImages(epoch, generated_images, results_folder / "generated_images", 5, 5)
+    saveImages(epoch, generated_images, out_folder / "generated_images", 5, 5)
 
     # Generate reconstructions from Discriminator
     _, decoded_images, decoded_part_images = D(test_images, training=False)
     decoded_images = denormalizeImages(decoded_images, dtype=tf.uint8).numpy()
     decoded_part_images = denormalizeImages(decoded_part_images, dtype=tf.uint8).numpy()
-    saveImages(epoch, decoded_images, results_folder / "reconstructed_whole_images", 5, 5)
+    saveImages(epoch, decoded_images, out_folder / "reconstructed_whole_images", 5, 5)
     saveImages(epoch, decoded_part_images,
-               results_folder / "reconstructed_part_images", 5, 5)
+               out_folder / "reconstructed_part_images", 5, 5)
 
     if epoch == epochs - 1:
         file = open(checkpoints_folder / "epoch_file.txt", "w+")
