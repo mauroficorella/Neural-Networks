@@ -12,7 +12,7 @@ def saveImages(epoch: int, images: np.ndarray, save_path: Path, n_rows: int, n_c
     if not save_path.is_dir():
         save_path.mkdir(parents=True)
 
-    fig, ax = plt.subplots(n_rows, n_cols, figdim=fig_dim)
+    fig, ax = plt.subplots(n_rows, n_cols, figsize=fig_dim)
     ax = ax.flatten()
 
     for i in range(len(ax)):
