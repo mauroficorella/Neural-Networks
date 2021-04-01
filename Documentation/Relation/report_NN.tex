@@ -1,9 +1,9 @@
 \documentclass[12pt]{article}
 \usepackage[a4paper,
-left=20mm,
-right=20mm,
+left=15mm,
+right=15mm,
 top=20mm,
-bottom=20mm]{geometry}
+bottom=15mm]{geometry}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{algorithm}
@@ -16,6 +16,7 @@ bottom=20mm]{geometry}
 
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 \renewcommand{\labelitemii}{$\star$}
+
 
 \begin{document}
 
@@ -53,6 +54,7 @@ bottom=20mm]{geometry}
 \newpage
 \pagestyle{fancy}
 \fancyhf{}
+\fancyfoot[R]{\thepage}
 \rhead{Mauro Ficorella, Martina Turbessi, Valentina Sisti}
 \lhead{FastGAN}
 
@@ -60,8 +62,9 @@ bottom=20mm]{geometry}
 
 %\section*{Abstract}
 \begin{center}
-	\normalsize\MakeUppercase{\textbf{Abstract}}
-
+	
+	\normalsize\MakeUppercase{\textbf{Abstract}\vspace*{0.35cm}}
+	
 	\begin{minipage}[t]{0.8\textwidth}
 	\textit{The main aim of FastGAN is to allow users with limited computing budget and resources to 
 	train a GAN. Moreover it eliminates the requirement of a big dataset for training.
@@ -81,9 +84,50 @@ bottom=20mm]{geometry}
 
 
 % INTRODUCTION --------------------------------------------------------------------
-
+\vspace*{0.5cm}
 \section{Introduction}
-	
+\large
+	State-of-the-art (SOTA) GANs, despite having a lot of usage (implications) in real life applications, 
+	such as photo editing, diseases diagnosis, image translation and artistic creation, their high cost in 
+	terms of computational power and dataset size made their usage very limited in contexts with a very small
+	computational budget. More specificly, there are three main problems afflicting GANs' training:
+	\begin{itemize}
+		\setlength\itemsep{0.01em}
+		\item \textit{Accelerate training}: this problem has been approached from various perspectives, but this brought
+			  only very limited improvements in training speed, while not enhancing quality within the shortened training time;
+		\item \textit{High resolution training}: this made GAN much harder to converge, since the increased model parameters
+			  lead to a more rigid gradient flow to optimize G, and since the target distribution made by images at high resolution
+			  is super sparse. There was some approaches trying to solve this problem, but they led to a slightly greater computational
+			  cost, consuming more GPU memory and requiring more training time;
+		\item \textit{Stabilize training}: Mode-collapse on generator G is a big challenge when training GANs, given fewer training
+			  samples and lower computational power and budgets (smaller batch-size). D is unable to provide consistent gradients to 
+			  train G, since is more likely to be overfitting on the datasets. There was, also here, approaches that tryed to solve this 
+			  problem, but they have limited using scenario and image domain, and worked only on low resolution images with unlimited computing
+			  resources.
+	\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{Images/problems.png}
+	\end{center}
+	In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models, 
+	but this solution had the disadvantage of the lack of guarantee to find dataset compatible with the pre-training. 
+	Another way was fine-tuning, but this gave even worse results in terms of performance.
+	Those approaches were not "considered" by people who wanted to train their model from scratch, in order to 
+	avoid biases typic of the fine-tuned pre-trained models; in other cases there were the necessity to train models
+	with datasets containing less than 100 images.
+	A possible workaround for the situation of a small dataset was dynamic data-augmentation, but the cost of SOTA models
+	remained very high.\\\\
+	This paper aims to learn an unconditional GAN requiring, at the same time, low computational power and small datasets
+	for training. In order to do this, FastGAN has a "fast-learning" generator G and a discriminator D able to continuously
+	return signals very useful to train G. FastGAN reaches the above objectives based on the following two techniques:
+	\begin{itemize}
+		\setlength\itemsep{0.01em}
+		\item \textbf{Skip-Layer channel-wise Excitation module}: revises channel responses on high-scale feature-maps using
+			  low-scale activations and allows to reach a faster training using a more robust gradient flow throughout the 
+			  model weights;
+		\item \textbf{Self-supervised discriminator D trained as a feature-encoder with an extra decoder}: this discriminator
+			  is forced to learn a feature-map that covers more regions from an image in input; in this way it gives richer
+			  signals in order to train G. It has been shown that auto-encoding is the best self-supervision strategy for D.
+	\end{itemize} 
 
 % CAPITOLO 1 -------------------------------------------------------------------------
 
@@ -93,71 +137,29 @@ bottom=20mm]{geometry}
 
 % CAPITOLO 2 -------------------------------------------------------------------------
 
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
-
 \section*{NOME}
 
 % CAPITOLO 3 -------------------------------------------------------------------------
-
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
 
 \section*{NOME}
 
 % CAPITOLO 4 -------------------------------------------------------------------------
 
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
-
 \section*{NOME}
 
 % CAPITOLO 5 -------------------------------------------------------------------------
-
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
 
 \section*{NOME}
 
 % CAPITOLO 6 -------------------------------------------------------------------------
 
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
-
 \section*{NOME}
 
 % CAPITOLO 7 -------------------------------------------------------------------------
 
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
-
 \section*{NOME}
 
 % CAPITOLO 8 -------------------------------------------------------------------------
-
-\newpage
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{NOMI O CAPITOLO}
-\lhead{TITOLO PROGETTO}
 
 \section*{NOME}
 

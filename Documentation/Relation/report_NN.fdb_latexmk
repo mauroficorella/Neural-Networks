@@ -1,8 +1,10 @@
 # Fdb version 3
-["pdflatex"] 1617268973 "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf" "report_NN" 1617268974
-  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux" 1617268974 198 07a5c8f1275e3557102cf9a9ce777823 ""
-  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" 1617268972 5078 5008ada62397c3e958ff547ec14f87ae ""
+["pdflatex"] 1617290296 "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf" "report_NN" 1617290317
+  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux" 1617290296 198 a60d1a8841cdec2103b8460f5b52ac0e ""
+  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" 1617290315 8057 f033fa82ecc8c0c565d4c72e1cc47094 ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/tfm/jknappen/ec/tcrm1440.tfm" 1136768653 1536 3290a75021d32d016616fe527bc9884c ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr17.tfm" 1136768653 1292 296a67155bdbfc32aa9c636f21e91433 ""
@@ -11,6 +13,7 @@
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb" 1215737283 131078 d96015a2fa5c350129e933ca070b2484 ""
   "/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/iftex.sty" 1583617216 6501 4011d89d9621e0b0901138815ba5ff29 ""
   "/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifvtex.sty" 1572645307 1057 525c2192b5febbd8c1f662c9468335bb ""
@@ -46,11 +49,12 @@
   "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1616050338 2432455 af08bb61053e75bc6b98a2559a0dea6d ""
   "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
   "Images/Logo.jpg" 1588497304 41544 eb27fb01f4787a842d6170fc80195b7d ""
-  "report_NN.aux" 1617268974 198 07a5c8f1275e3557102cf9a9ce777823 "pdflatex"
-  "report_NN.tex" 1617268972 5078 5008ada62397c3e958ff547ec14f87ae ""
+  "Images/problems.png" 1617288370 12754 3b7677a546fd508dda55347d0ea73bf8 ""
+  "report_NN.aux" 1617290296 198 a60d1a8841cdec2103b8460f5b52ac0e "pdflatex"
+  "report_NN.tex" 1617290315 8057 f033fa82ecc8c0c565d4c72e1cc47094 ""
   (generated)
   "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf"
+  "report_NN.pdf"
+  "report_NN.log"
   "report_NN.aux"
   "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.log"
-  "report_NN.log"
-  "report_NN.pdf"
