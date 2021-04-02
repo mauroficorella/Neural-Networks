@@ -156,18 +156,25 @@ strong on small datasets.
 
 In the traditional GANs the generator $G$ required more convolutional layers (and so a deeper model) to synthesize 
 high resolution images, and this led to longer training times. 
-In order to train such a deep model it was used the Residual structure (ResBlock) increasing the computational cost. \\\\
-FastGAN, instead, modified this approach using the two following strategies:
+In order to train such a deep model it was used the Residual structure (ResBlock) increasing the computational cost.
+Traditionally ResBlock implements the skip-connection as an element-wise addition between the activations from different
+convolutional layers, but with the requirement that the spatial dimensions of the activations are the same.
+Moreover, previously, skip-connections were only used within the same resolution.\\\\
+FastGAN, instead, uses a different approach through the two following strategies:
 \begin{itemize}
 	\setlength\itemsep{0.01em}
 	\item {	
-	ResBlock implements the skip-connection as an element-wise addition between the activations from different
-	convolutional layers
+	In order to eliminate the complex computation of convolution, is used multiplication between activations, instead of 
+	addition, giving to one side of activations the spatial dimension of $1^2$.
 	}
 	\item {
-
+	Instead of performing skip-connection only within the same resolution, here is performed between resolutions with a much
+	longer range ($8^2$ and $128^2$, $16^2$ and $256^2$, $32^2$ and $512^2$); this follows from the fact that an equal spatial-dimension
+	is no longer required.
 	}
 \end{itemize} 
+Using the above techniques, SLE keeps the advantages of ResBlock with a shortcut gradient flow, while not requiring an extra computation
+load.
 
 \subsection{Self-Supervised Discriminator}
 
