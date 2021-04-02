@@ -13,6 +13,8 @@ bottom=15mm]{geometry}
 \usepackage{bm}
 \usepackage{fancyhdr}
 \usepackage{amssymb}
+\usepackage{sidecap}
+
 
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 \renewcommand{\labelitemii}{$\star$}
@@ -65,7 +67,7 @@ bottom=15mm]{geometry}
 	
 	\normalsize\MakeUppercase{\textbf{Abstract}\vspace*{0.35cm}}
 	
-	\begin{minipage}[t]{0.8\textwidth}
+	\begin{minipage}[t]{0.9\textwidth}
 	\textit{The main aim of FastGAN is to allow users with limited computing budget and resources to 
 	train a GAN. Moreover it eliminates the requirement of a big dataset for training.
 	These are big advantages since traditional GANs required a lot of GPU computational power
@@ -84,31 +86,32 @@ bottom=15mm]{geometry}
 
 
 % INTRODUCTION --------------------------------------------------------------------
-\vspace*{0.5cm}
 \section{Introduction}
 \large
 	State-of-the-art (SOTA) GANs, despite having a lot of usage (implications) in real life applications, 
 	such as photo editing, diseases diagnosis, image translation and artistic creation, their high cost in 
 	terms of computational power and dataset size made their usage very limited in contexts with a very small
-	computational budget. More specificly, there are three main problems afflicting GANs' training:
+	computational budget. More specifically, there are three main problems afflicting GANs' training:
 	\begin{itemize}
 		\setlength\itemsep{0.01em}
 		\item \textit{Accelerate training}: this problem has been approached from various perspectives, but this brought
 			  only very limited improvements in training speed, while not enhancing quality within the shortened training time;
 		\item \textit{High resolution training}: this made GAN much harder to converge, since the increased model parameters
-			  lead to a more rigid gradient flow to optimize G, and since the target distribution made by images at high resolution
+			  lead to a more rigid gradient flow to optimize $G$, and since the target distribution made by images at high resolution
 			  is super sparse. There was some approaches trying to solve this problem, but they led to a slightly greater computational
 			  cost, consuming more GPU memory and requiring more training time;
-		\item \textit{Stabilize training}: Mode-collapse on generator G is a big challenge when training GANs, given fewer training
-			  samples and lower computational power and budgets (smaller batch-size). D is unable to provide consistent gradients to 
+		\item \textit{Stabilize training}: Mode-collapse on generator $G$ is a big challenge when training GANs, given fewer training
+			  samples and lower computational power and budgets (smaller batch-size). $D$ is unable to provide consistent gradients to 
 			  train G, since is more likely to be overfitting on the datasets. There was, also here, approaches that tryed to solve this 
 			  problem, but they have limited using scenario and image domain, and worked only on low resolution images with unlimited computing
 			  resources.
 	\end{itemize}
-	\begin{center}
+	\begin{figure}[H]
+		\centering
 		\includegraphics[width=0.5\textwidth]{Images/problems.png}
-	\end{center}
-	In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models, 
+		\caption{FastGAN training challenges.} 
+	\end{figure}
+	In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models,
 	but this solution had the disadvantage of the lack of guarantee to find dataset compatible with the pre-training. 
 	Another way was fine-tuning, but this gave even worse results in terms of performance.
 	Those approaches were not "considered" by people who wanted to train their model from scratch, in order to 
@@ -117,51 +120,98 @@ bottom=15mm]{geometry}
 	A possible workaround for the situation of a small dataset was dynamic data-augmentation, but the cost of SOTA models
 	remained very high.\\\\
 	This paper aims to learn an unconditional GAN requiring, at the same time, low computational power and small datasets
-	for training. In order to do this, FastGAN has a "fast-learning" generator G and a discriminator D able to continuously
+	for training. In order to do this, FastGAN has a "fast-learning" generator $G$ and a discriminator $D$ able to continuously
 	return signals very useful to train G. FastGAN reaches the above objectives based on the following two techniques:
 	\begin{itemize}
 		\setlength\itemsep{0.01em}
 		\item \textbf{Skip-Layer channel-wise Excitation module}: revises channel responses on high-scale feature-maps using
 			  low-scale activations and allows to reach a faster training using a more robust gradient flow throughout the 
 			  model weights;
-		\item \textbf{Self-supervised discriminator D trained as a feature-encoder with an extra decoder}: this discriminator
+		\item \textbf{Self-supervised discriminator $D$ trained as a feature-encoder with an extra decoder}: this discriminator
 			  is forced to learn a feature-map that covers more regions from an image in input; in this way it gives richer
-			  signals in order to train G. It has been shown that auto-encoding is the best self-supervision strategy for D.
+			  signals in order to train $G$. It has been shown that auto-encoding is the best self-supervision strategy for $D$.
 	\end{itemize} 
 
-% CAPITOLO 1 -------------------------------------------------------------------------
+% METHOD -------------------------------------------------------------------------
 
 \section{Method}
-	
+\large	
 
+\begin{figure}[H]
+	\includegraphics[width=1\textwidth]{Images/structure.png}
+	\caption{
+		On the left is represented the structure of the skip-layer excitation,
+		on the right is represented the structure of the generator $G$. 
+		Feature-maps are the yellow boxes, up-sampling structures are represented 
+		by blue boxes and blue arrows, SLE modules are the red boxes.
+		}
+\end{figure}
+In order to optimize GANs with respect to the SOTA models, in FastGAN is adopted a lightweight model, 
+using a single convolutional layer on each resolution in the generator $G$; moreover, on the high resolutions
+in both generator $G$ and discriminator $D$, only three channels for the convolutional layers are applied in 
+input and output. As said before this structure helps making FastGAN faster to train, remaining, at the same time,
+strong on small datasets. 
 
-% CAPITOLO 2 -------------------------------------------------------------------------
+\subsection{Skip-Layer Channel-Wise Excitation}
 
-\section*{NOME}
+In the traditional GANs the generator $G$ required more convolutional layers (and so a deeper model) to synthesize 
+high resolution images, and this led to longer training times. 
+In order to train such a deep model it was used the Residual structure (ResBlock) increasing the computational cost. \\\\
+FastGAN, instead, modified this approach using the two following strategies:
+\begin{itemize}
+	\setlength\itemsep{0.01em}
+	\item {	
+	ResBlock implements the skip-connection as an element-wise addition between the activations from different
+	convolutional layers
+	}
+	\item {
+
+	}
+\end{itemize} 
+
+\subsection{Self-Supervised Discriminator}
+
+% CAPITOLO 2 -------------------------------------------------------------------------	
+
+\section{NOME}
+\large
+
 
 % CAPITOLO 3 -------------------------------------------------------------------------
 
-\section*{NOME}
+\section{NOME}
+\large
+
 
 % CAPITOLO 4 -------------------------------------------------------------------------
 
-\section*{NOME}
+\section{NOME}
+\large
+
 
 % CAPITOLO 5 -------------------------------------------------------------------------
 
-\section*{NOME}
+\section{NOME}
+\large
+
 
 % CAPITOLO 6 -------------------------------------------------------------------------
 
-\section*{NOME}
+\section{NOME}
+\large
+
 
 % CAPITOLO 7 -------------------------------------------------------------------------
 
-\section*{NOME}
+\section{NOME}
+\large
+
 
 % CAPITOLO 8 -------------------------------------------------------------------------
 
-\section*{NOME}
+\section{NOME}
+\large
+
 
 \end{document}
 
