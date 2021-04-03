@@ -14,6 +14,7 @@ bottom=15mm]{geometry}
 \usepackage{fancyhdr}
 \usepackage{amssymb}
 \usepackage{sidecap}
+\usepackage{hyperref}
 
 
 \newcommand\tab[1][1cm]{\hspace*{#1}}
@@ -138,6 +139,7 @@ bottom=15mm]{geometry}
 \large	
 
 \begin{figure}[H]
+	\label{fig:fig2}
 	\includegraphics[width=1\textwidth]{Images/structure.png}
 	\caption{
 		On the left is represented the structure of the skip-layer excitation,
@@ -174,7 +176,18 @@ FastGAN, instead, uses a different approach through the two following strategies
 	}
 \end{itemize} 
 Using the above techniques, SLE keeps the advantages of ResBlock with a shortcut gradient flow, while not requiring an extra computation
-load.
+load.\\\\
+The Skip-Layer Excitation module is defined as:\\\\
+\centerline{$\mathbf{y} = \mathcal{F}(\mathbf{x}_{low}, \{\mathbf{W}_i\})\cdot \mathbf{x}_{high}$}\\\\
+In function $\mathcal{F}$ there are the operations on $\mathbf{x}_{low}$; module weights to be learned are represented by $\mathbf{W}_i$; 
+$\mathbf{x}$ is the input feature-map of the SLE module, while $\mathbf{y}$ is its output feature-map.
+As shown in the \hyperref[fig:fig2]{Figure 2}, the SLE module is composed by the feature-map $\mathbf{x}_{low}$ at resolution $8 \times 8$ and
+the feature-map $\mathbf{x}_{high}$ at resolution $128 \times 128$.\\
+First of all $\mathcal{F}$ contains an adaptive average-pooling layer that down-samples $\mathbf{x}_{low}$ into $4 \times 4$; then there is the
+convolutional-layer that further down-samples it into $1 \times 1$. Moreover non-linearity is modeled by a LeakyReLU, and after that another 
+convolutional-layer is used to let $\mathbf{x}_{low}$ having the same channel size as $\mathbf{x}_{high}$. Finally there is a Sigmoid function that
+does a gating operation, and then the output from $\mathcal{F}$ is multiplied with $\mathbf{x}_{high}$ along the channel dimension, returning $\mathbf{y}$
+with the same shape as $\mathbf{x}_{high}$.
 
 \subsection{Self-Supervised Discriminator}
 
