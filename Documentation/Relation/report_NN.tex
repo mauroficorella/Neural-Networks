@@ -187,7 +187,11 @@ First of all $\mathcal{F}$ contains an adaptive average-pooling layer that down-
 convolutional-layer that further down-samples it into $1 \times 1$. Moreover non-linearity is modeled by a LeakyReLU, and after that another 
 convolutional-layer is used to let $\mathbf{x}_{low}$ having the same channel size as $\mathbf{x}_{high}$. Finally there is a Sigmoid function that
 does a gating operation, and then the output from $\mathcal{F}$ is multiplied with $\mathbf{x}_{high}$ along the channel dimension, returning $\mathbf{y}$
-with the same shape as $\mathbf{x}_{high}$.
+with the same shape as $\mathbf{x}_{high}$.\\\\
+The above Skip-Layer Excitation works between feature-maps that are far away from each other, brings the benefit of the channel-wise feature re-calibration 
+and makes the whole model’s gradient flow stronger; moreover it enables the generator $G$ to automatically disentangle the content and style attributes.
+It has also be shown that, starting from another synthesized sample, and replacing $\mathbf{x}_{low}$ in the Skip-Layer Excitation, the generator $G$ can generate an image
+in the same style of the new replacing image and with the content unchanged. 
 
 \subsection{Self-Supervised Discriminator}
 
