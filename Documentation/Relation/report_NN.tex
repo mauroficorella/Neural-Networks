@@ -177,23 +177,78 @@ FastGAN, instead, uses a different approach through the two following strategies
 \end{itemize} 
 Using the above techniques, SLE keeps the advantages of ResBlock with a shortcut gradient flow, while not requiring an extra computation
 load.\\\\
-The Skip-Layer Excitation module is defined as:\\\\
-\centerline{$\mathbf{y} = \mathcal{F}(\mathbf{x}_{low}, \{\mathbf{W}_i\})\cdot \mathbf{x}_{high}$}\\\\
-In function $\mathcal{F}$ there are the operations on $\mathbf{x}_{low}$; module weights to be learned are represented by $\mathbf{W}_i$; 
-$\mathbf{x}$ is the input feature-map of the SLE module, while $\mathbf{y}$ is its output feature-map.
-As shown in the \hyperref[fig:fig2]{Figure 2}, the SLE module is composed by the feature-map $\mathbf{x}_{low}$ at resolution $8 \times 8$ and
-the feature-map $\mathbf{x}_{high}$ at resolution $128 \times 128$.\\
-First of all $\mathcal{F}$ contains an adaptive average-pooling layer that down-samples $\mathbf{x}_{low}$ into $4 \times 4$; then there is the
-convolutional-layer that further down-samples it into $1 \times 1$. Moreover non-linearity is modeled by a LeakyReLU, and after that another 
-convolutional-layer is used to let $\mathbf{x}_{low}$ having the same channel size as $\mathbf{x}_{high}$. Finally there is a Sigmoid function that
-does a gating operation, and then the output from $\mathcal{F}$ is multiplied with $\mathbf{x}_{high}$ along the channel dimension, returning $\mathbf{y}$
-with the same shape as $\mathbf{x}_{high}$.\\\\
-The above Skip-Layer Excitation works between feature-maps that are far away from each other, brings the benefit of the channel-wise feature re-calibration 
-and makes the whole model’s gradient flow stronger; moreover it enables the generator $G$ to automatically disentangle the content and style attributes.
-It has also be shown that, starting from another synthesized sample, and replacing $\mathbf{x}_{low}$ in the Skip-Layer Excitation, the generator $G$ can generate an image
-in the same style of the new replacing image and with the content unchanged. 
+The Skip-Layer Excitation module is defined as:
+\begin{equation}
+	\mathbf{y} = \mathcal{F}(\mathbf{x}_{low}, \{\mathbf{W}_i\})\cdot \mathbf{x}_{high}
+\end{equation}
+In function $\mathcal{F}$ there are the operations on $\mathbf{x}_{low}$; module weights to be learned 
+are represented by $\mathbf{W}_i$; $\mathbf{x}$ is the input feature-map of the SLE module, while $\mathbf{y}$
+is its output feature-map. As shown in the \hyperref[fig:fig2]{Figure 2}, the SLE module is composed by the 
+feature-map $\mathbf{x}_{low}$ at resolution $8 \times 8$ and the feature-map $\mathbf{x}_{high}$ at resolution $128 \times 128$.\\
+First of all $\mathcal{F}$ contains an adaptive average-pooling layer that down-samples $\mathbf{x}_{low}$ into $4 \times 4$; then
+there is the convolutional-layer that further down-samples it into $1 \times 1$. Moreover non-linearity is modeled by a LeakyReLU,
+and after that another convolutional-layer is used to let $\mathbf{x}_{low}$ having the same channel size as $\mathbf{x}_{high}$. 
+Finally there is a Sigmoid function that does a gating operation, and then the output from $\mathcal{F}$ is multiplied with 
+$\mathbf{x}_{high}$ along the channel dimension, returning $\mathbf{y}$ with the same shape as $\mathbf{x}_{high}$.\\\\
+The above Skip-Layer Excitation works between feature-maps that are far away from each other, brings the benefit of the channel-wise
+feature re-calibration and makes the whole model’s gradient flow stronger; moreover it enables the generator $G$ to automatically 
+disentangle the content and style attributes. It has also be shown that, starting from another synthesized sample, and replacing 
+$\mathbf{x}_{low}$ in the Skip-Layer Excitation, the generator $G$ can generate an image in the same style of the new replacing 
+image and with the content unchanged. 
 
 \subsection{Self-Supervised Discriminator}
+
+\begin{figure}[H]
+	\label{fig:fig3}
+	\includegraphics[width=1\textwidth]{Images/discriminator.png}
+	\caption{
+		Here is represented the structure and the forward flow of the discriminator.
+		The same residual down-sampling structure is represented by the blue boxes and blue arrows,
+		the same decoder structure is represented by the green boxes.
+		}
+\end{figure}
+
+The discriminator $D$ is handled as an encoder and trained using small decoders. In this way the decoders can give good reconstructions
+of the images thanks to the image features that the decoder $D$ is forced to extract. Moreover a simple reconstruction loss, which is 
+trained only on real samples, is used to optimize the decoders together with the decoder $D$:
+\begin{equation}
+	\label{eq:eq2}
+	\mathcal{L}_{recons} = \mathbb{E}_{\mathbf{f} \sim D_{encode}(x),\ x \sim I_{real}}[\parallel \mathcal{G}(\mathbf{f}) - \mathcal{T}(x) \parallel]
+\end{equation}
+More specifically:
+\begin{itemize}
+	\setlength\itemsep{0.01em}
+	\item {	
+		$\mathbf{f}$ represents the intermediate feature-maps from discriminator $D$;
+	}
+	\item {
+		$\mathcal{G}$ is the function that contains the processing on $\mathbf{f}$ and the decoder;
+	}
+	\item {
+		$\mathcal{T}$ is the function that represents the processing on the sample $x$ from the real images $I_{real}$.
+	}
+\end{itemize} 
+As shown in \hyperref[fig:fig3]{Figure 3}, in the self-supervised discriminator $D$ two decoders are employed, on two scales, for the
+feature-maps $\mathbf{f}_1$ on $16^2$ and $\mathbf{f}_2$ on $8^2$. In order to output images at the resolution of $128 \times 128$,
+the decoders consist of four convolutional-layers: this approach causes little extra computations.
+Then $\mathbf{f}_1$ is cropped, in a random way, at $\frac{1}{8}$ of its height and width; the same crop is made on the real image
+in order to output $I_{part}$, while the real image is downsampled in order to output $I$.
+After this, starting from, respectively, the cropped $\mathbf{f}_1$ and $\mathbf{f}_2$, $I'_{part}$ and $I'$ are generated by the decoders.
+Lastly, in order to minimize the loss in the \hyperref[eq:eq2]{equation 2}, the discriminator $D$ and the decoders are trained together, by
+matching $I'_{part}$ to $I_{part}$ and $I'$ to $I$.\\\\
+The discriminator D, thanks to the above described training, extracts a better representation from the input, that includes both the detailed
+textures from $\mathbf{f}_1$ and the overall compositions from $\mathbf{f}_2$. Here, as a method for self-supervised learning, is used the 
+auto-encoding approach, which improves model's robustness, generalization ability and performances. Moreover, this auto-encoding
+training regards only the regularization of the discriminator $D$, and not involves the generator $G$ in any way.\\\\
+In order to train, iteratively, $D$ and $G$, in FastGAN is used the hinge version of the adversarial loss, that is the fastest in terms
+of performances:
+\begin{equation}
+	\mathcal{L}_D = - \mathbb{E}_{x \sim I_{real}}[min(0, -1 + D(x))] - \mathbb{E}_{\hat{x} \sim G(z)}[min(0,-1 - D(\hat{x}))] + \mathcal{L}_{recons}
+\end{equation}
+\begin{equation}
+	\mathcal{L}_G = - \mathbb{E}_{z \sim \mathcal{N}}[D(G(z))]
+\end{equation}
+
 
 % CAPITOLO 2 -------------------------------------------------------------------------	
 
