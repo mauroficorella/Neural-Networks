@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.18)  8 APR 2021 17:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.18)  9 APR 2021 14:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -496,8 +496,8 @@ This may cause the page layout to be inconsistent, however.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.126 	\begin{itemize}
-                       [1 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/problems.png>]
+l.126 \begin{itemize}
+                      [1 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/problems.png>]
 <Images/structure.png, id=67, 778.91pt x 242.9075pt>
 File: Images/structure.png Graphic file (type png)
 <use Images/structure.png>
@@ -534,30 +534,71 @@ Underfull \hbox (badness 10000) in paragraph at lines 231--245
 
  []
 
-[4 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/discriminator.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 295.
- [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 295.
+[4 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/discriminator.png>] [5]
+<Images/panda.jpg, id=102, 538.01pt x 538.01pt>
+File: Images/panda.jpg Graphic file (type jpg)
+<use Images/panda.jpg>
+Package pdftex.def Info: Images/panda.jpg  used on input line 307.
+(pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
+<Images/obama.jpg, id=103, 538.01pt x 538.01pt>
+File: Images/obama.jpg Graphic file (type jpg)
+<use Images/obama.jpg>
+Package pdftex.def Info: Images/obama.jpg  used on input line 310.
+(pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
+<Images/grumpy.jpg, id=104, 538.01pt x 538.01pt>
+File: Images/grumpy.jpg Graphic file (type jpg)
+<use Images/grumpy.jpg>
+Package pdftex.def Info: Images/grumpy.jpg  used on input line 313.
+(pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
+<Images/cat.jpg, id=105, 538.01pt x 538.01pt>
+File: Images/cat.jpg Graphic file (type jpg)
+<use Images/cat.jpg>
+Package pdftex.def Info: Images/cat.jpg  used on input line 316.
+(pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
+<Images/dog.jpg, id=106, 538.01pt x 538.01pt>
+File: Images/dog.jpg Graphic file (type jpg)
+<use Images/dog.jpg>
+Package pdftex.def Info: Images/dog.jpg  used on input line 319.
+(pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--321
+
+ []
+
+
+Overfull \hbox (12.52538pt too wide) in paragraph at lines 303--321
+[] [] [] [] [] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 326--334
+
+ []
+
+[6 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/panda.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/obama.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/grumpy.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/cat.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/dog.jpg>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 366.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 366.
  (/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 295.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 295.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 366.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 366.
 Package rerunfilecheck Info: File `report_NN.out' has not changed.
-(rerunfilecheck)             Checksum: C3C48D062094940894DB6FBF7ABBEC4B;524.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 295.
+(rerunfilecheck)             Checksum: 675087CB3EF806D813F83CB2E5AAB784;537.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 366.
  ) 
 Here is how much of TeX's memory you used:
- 7636 strings out of 480608
- 113003 string characters out of 5903630
+ 7668 strings out of 480608
+ 113537 string characters out of 5903630
  386918 words of memory out of 5000000
- 23333 multiletter control sequences out of 15000+600000
+ 23358 multiletter control sequences out of 15000+600000
  547359 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  34i,11n,45p,498b,340s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
-Output written on /Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf (6 pages, 386782 bytes).
+Output written on /Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf (8 pages, 745705 bytes).
 PDF statistics:
- 149 PDF objects out of 1000 (max. 8388607)
- 120 compressed objects within 2 object streams
- 24 named destinations out of 1000 (max. 500000)
- 109 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 165 PDF objects out of 1000 (max. 8388607)
+ 129 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
+ 134 words of extra memory for PDF output out of 10000 (max. 10000000)
 
