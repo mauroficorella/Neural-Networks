@@ -3,7 +3,7 @@
 left=15mm,
 right=15mm,
 top=20mm,
-bottom=15mm]{geometry}
+bottom=20mm]{geometry}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{algorithm}
@@ -66,12 +66,11 @@ bottom=15mm]{geometry}
 
 % ABSTRACT --------------------------------------------------------------------
 
-%\section*{Abstract}
 \begin{center}
 	
 	\normalsize\MakeUppercase{\textbf{Abstract}\vspace*{0.35cm}}
 	
-	\begin{minipage}[t]{0.9\textwidth}
+	\begin{minipage}[t]{0.7\textwidth}
 	\textit{The main aim of FastGAN is to allow users with limited computing budget and resources to 
 	train a GAN. Moreover it eliminates the requirement of a big dataset for training.
 	These are big advantages since traditional GANs required a lot of GPU computational power
@@ -88,7 +87,7 @@ bottom=15mm]{geometry}
 
 \end{center}
 
-
+\vspace*{1.5cm}
 % INTRODUCTION --------------------------------------------------------------------
 \section{Introduction}
 \large
@@ -118,7 +117,7 @@ computational budget. More specifically, there are three main problems afflictin
 In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models,
 but this solution had the disadvantage of the lack of guarantee to find dataset compatible with the pre-training. 
 Another way was fine-tuning, but this gave even worse results in terms of performance.
-Those approaches were not "considered" by people who wanted to train their model from scratch, in order to 
+Those approaches were not took in consideration by people who wanted to train their model from scratch, in order to 
 avoid biases typic of the fine-tuned pre-trained models; in other cases there were the necessity to train models
 with datasets containing less than 100 images.
 A possible workaround for the situation of a small dataset was dynamic data-augmentation, but the cost of SOTA models
@@ -251,6 +250,23 @@ of performances:
 \begin{equation}
 	\mathcal{L}_G = - \mathbb{E}_{z \sim \mathcal{N}}[D(G(z))]
 \end{equation}
+The model is built starting from a baseline model with the two above proposed techniques (SLE and self-supervised discriminator).
+The baseline model is made of the following :
+\begin{itemize}
+	\setlength\itemsep{0.01em}
+	\item {	
+		Batch-normalization
+	}
+	\item {
+		ADAM optimization
+	}
+	\item {
+		Differentiable-augmentation
+	}
+	\item {
+		GLU instead of ReLU in G
+	}
+\end{itemize} 
 
 % DATASET -------------------------------------------------------------------------	
 \newpage
@@ -351,6 +367,10 @@ the discriminator.
 	\item NVIDIA CUDA 11
 	\item NVIDIA cuDNN 8
 \end{itemize}
+The above requirements are only the basic ones; in order to replicate the environment that we used, we have created
+the "environment.yml" file that includes all the packages needed.
+We were able to execute the project both on Windows and MacOS, but we ran the training only on Windows, 
+in order to exploit the performance boost given by the CUDA hardware.
 
 
 \subsection{Metrics}
@@ -367,7 +387,6 @@ well with higher quality images.
 More specifically we calculated FID during training for each epoch, and we used it in order to
 save model's weights only when it got better (lower) with respect to the previous best saved FID score:
 this helps in mantaining high performances. 
-
 
 
 % CAPITOLO 4 -------------------------------------------------------------------------

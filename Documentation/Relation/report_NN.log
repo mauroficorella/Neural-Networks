@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.4.1)  9 APR 2021 16:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.18)  9 APR 2021 17:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.tex
-(/Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.tex
+**/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex
+(/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex
 LaTeX2e <2020-02-02> patch level 5
 L3 programming layer <2020-03-06> (/usr/local/texlive/2020/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
@@ -360,7 +360,7 @@ Package: titlesec 2019/10/16 v2.13 Sectioning titles
 File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count283
 \l__pdf_internal_box=\box97
-) (/Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.aux)
+) (/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux)
 \openout1 = `report_NN.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
@@ -389,11 +389,11 @@ LaTeX Font Info:    ... okay on input line 27.
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
 * h-part:(L,W,R)=(42.67912pt, 512.14963pt, 42.67912pt)
-* v-part:(T,H,B)=(56.9055pt, 745.46222pt, 42.67912pt)
+* v-part:(T,H,B)=(56.9055pt, 731.23584pt, 56.9055pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
 * \textwidth=512.14963pt
-* \textheight=745.46222pt
+* \textheight=731.23584pt
 * \oddsidemargin=-29.59087pt
 * \evensidemargin=-29.59087pt
 * \topmargin=-52.36449pt
@@ -468,7 +468,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 27.
 LaTeX Info: Redefining \pageref on input line 27.
 LaTeX Info: Redefining \nameref on input line 27.
- (/Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.out) (/Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.out)
+ (/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.out) (/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.out)
 \@outlinefile=\write3
 \openout3 = `report_NN.out'.
 
@@ -479,19 +479,19 @@ Package pdftex.def Info: Images/Logo.jpg  used on input line 47.
 (pdftex.def)             Requested size: 204.85672pt x 211.49138pt.
  [1
 
-{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/Logo.jpg>]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 104.
+{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/Logo.jpg>]
+LaTeX Font Info:    Trying to load font information for U+msa on input line 103.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 104.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 103.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 <Images/problems.png, id=68, 445.665pt x 144.54pt>
 File: Images/problems.png Graphic file (type png)
 <use Images/problems.png>
-Package pdftex.def Info: Images/problems.png  used on input line 115.
+Package pdftex.def Info: Images/problems.png  used on input line 114.
 (pdftex.def)             Requested size: 256.07481pt x 83.05249pt.
 
 
@@ -503,117 +503,117 @@ This may cause the page layout to be inconsistent, however.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.118 I
+l.117 I
        n some situations a possible way to avoid these problems was the tran... [1]
-Underfull \hbox (badness 10000) in paragraph at lines 118--129
+Underfull \hbox (badness 10000) in paragraph at lines 117--128
 
  []
 
 <Images/structure.png, id=77, 778.91pt x 242.9075pt>
 File: Images/structure.png Graphic file (type png)
 <use Images/structure.png>
-Package pdftex.def Info: Images/structure.png  used on input line 146.
+Package pdftex.def Info: Images/structure.png  used on input line 145.
 (pdftex.def)             Requested size: 512.14963pt x 159.72269pt.
-[2 </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/problems.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 162--169
+[2 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/problems.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 161--168
+
+ []
+
+[3 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/structure.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 180--183
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 181--184
-
- []
-
-[3 </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/structure.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 186--201
+Underfull \hbox (badness 10000) in paragraph at lines 185--200
 
  []
 
 <Images/discriminator.png, id=92, 636.3775pt x 176.66pt>
 File: Images/discriminator.png Graphic file (type png)
 <use Images/discriminator.png>
-Package pdftex.def Info: Images/discriminator.png  used on input line 206.
+Package pdftex.def Info: Images/discriminator.png  used on input line 205.
 (pdftex.def)             Requested size: 512.14963pt x 142.1719pt.
-[4 </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/discriminator.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 234--248
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 233--247
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 234--248
+Underfull \hbox (badness 10000) in paragraph at lines 233--247
 
  []
 
-[5]
-<Images/panda.jpg, id=114, 538.01pt x 538.01pt>
+[5 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/discriminator.png>] [6]
+<Images/panda.jpg, id=119, 538.01pt x 538.01pt>
 File: Images/panda.jpg Graphic file (type jpg)
 <use Images/panda.jpg>
-Package pdftex.def Info: Images/panda.jpg  used on input line 310.
+Package pdftex.def Info: Images/panda.jpg  used on input line 326.
 (pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
-<Images/obama.jpg, id=115, 538.01pt x 538.01pt>
+<Images/obama.jpg, id=120, 538.01pt x 538.01pt>
 File: Images/obama.jpg Graphic file (type jpg)
 <use Images/obama.jpg>
-Package pdftex.def Info: Images/obama.jpg  used on input line 313.
+Package pdftex.def Info: Images/obama.jpg  used on input line 329.
 (pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
-<Images/grumpy.jpg, id=116, 538.01pt x 538.01pt>
+<Images/grumpy.jpg, id=121, 538.01pt x 538.01pt>
 File: Images/grumpy.jpg Graphic file (type jpg)
 <use Images/grumpy.jpg>
-Package pdftex.def Info: Images/grumpy.jpg  used on input line 316.
+Package pdftex.def Info: Images/grumpy.jpg  used on input line 332.
 (pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
-<Images/cat.jpg, id=117, 538.01pt x 538.01pt>
+<Images/cat.jpg, id=122, 538.01pt x 538.01pt>
 File: Images/cat.jpg Graphic file (type jpg)
 <use Images/cat.jpg>
-Package pdftex.def Info: Images/cat.jpg  used on input line 319.
+Package pdftex.def Info: Images/cat.jpg  used on input line 335.
 (pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
-<Images/dog.jpg, id=118, 538.01pt x 538.01pt>
+<Images/dog.jpg, id=123, 538.01pt x 538.01pt>
 File: Images/dog.jpg Graphic file (type jpg)
 <use Images/dog.jpg>
-Package pdftex.def Info: Images/dog.jpg  used on input line 322.
+Package pdftex.def Info: Images/dog.jpg  used on input line 338.
 (pdftex.def)             Requested size: 102.42836pt x 102.42819pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 306--324
+Underfull \hbox (badness 10000) in paragraph at lines 322--340
 
  []
 
 
-Overfull \hbox (12.52538pt too wide) in paragraph at lines 306--324
+Overfull \hbox (12.52538pt too wide) in paragraph at lines 322--340
 [] [] [] [] [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 332--344
+Underfull \hbox (badness 10000) in paragraph at lines 348--360
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 332--344
+Underfull \hbox (badness 10000) in paragraph at lines 348--360
 
  []
 
-[6 </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/panda.jpg> </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/obama.jpg> </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/grumpy.jpg> </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/cat.jpg> </Users/martina/Desktop/Neural-Networks/Documentation/Relation/Images/dog.jpg>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 403.
- [7] [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 403.
- (/Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 403.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 403.
+[7 </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/panda.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/obama.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/grumpy.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/cat.jpg> </Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/Images/dog.jpg>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 422.
+ [8] [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 422.
+ (/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 422.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 422.
 Package rerunfilecheck Info: File `report_NN.out' has not changed.
 (rerunfilecheck)             Checksum: 8BB97266237D50C75A04B94C4B6FE0ED;750.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 403.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 422.
  ) 
 Here is how much of TeX's memory you used:
- 7952 strings out of 480608
- 116954 string characters out of 5903631
- 392721 words of memory out of 5000000
+ 7953 strings out of 480608
+ 117168 string characters out of 5903630
+ 392720 words of memory out of 5000000
  23634 multiletter control sequences out of 15000+600000
  547359 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,11n,45p,482b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,11n,45p,498b,378s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
-Output written on /Users/martina/Desktop/Neural-Networks/Documentation/Relation/report_NN.pdf (9 pages, 747708 bytes).
+Output written on /Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf (10 pages, 749104 bytes).
 PDF statistics:
- 181 PDF objects out of 1000 (max. 8388607)
- 144 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
+ 186 PDF objects out of 1000 (max. 8388607)
+ 148 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
  158 words of extra memory for PDF output out of 10000 (max. 10000000)
 
