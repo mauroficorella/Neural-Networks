@@ -89,49 +89,49 @@ bottom=15mm]{geometry}
 % INTRODUCTION --------------------------------------------------------------------
 \section{Introduction}
 \large
-	State-of-the-art (SOTA) GANs, despite having a lot of usage (implications) in real life applications, 
-	such as photo editing, diseases diagnosis, image translation and artistic creation, their high cost in 
-	terms of computational power and dataset size made their usage very limited in contexts with a very small
-	computational budget. More specifically, there are three main problems afflicting GANs' training:
-	\begin{itemize}
-		\setlength\itemsep{0.01em}
-		\item \textit{Accelerate training}: this problem has been approached from various perspectives, but this brought
-			  only very limited improvements in training speed, while not enhancing quality within the shortened training time;
-		\item \textit{High resolution training}: this made GAN much harder to converge, since the increased model parameters
-			  lead to a more rigid gradient flow to optimize $G$, and since the target distribution made by images at high resolution
-			  is super sparse. There was some approaches trying to solve this problem, but they led to a slightly greater computational
-			  cost, consuming more GPU memory and requiring more training time;
-		\item \textit{Stabilize training}: Mode-collapse on generator $G$ is a big challenge when training GANs, given fewer training
-			  samples and lower computational power and budgets (smaller batch-size). $D$ is unable to provide consistent gradients to 
-			  train G, since is more likely to be overfitting on the datasets. There was, also here, approaches that tryed to solve this 
-			  problem, but they have limited using scenario and image domain, and worked only on low resolution images with unlimited computing
-			  resources.
-	\end{itemize}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.5\textwidth]{Images/problems.png}
-		\caption{FastGAN training challenges.} 
-	\end{figure}
-	In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models,
-	but this solution had the disadvantage of the lack of guarantee to find dataset compatible with the pre-training. 
-	Another way was fine-tuning, but this gave even worse results in terms of performance.
-	Those approaches were not "considered" by people who wanted to train their model from scratch, in order to 
-	avoid biases typic of the fine-tuned pre-trained models; in other cases there were the necessity to train models
-	with datasets containing less than 100 images.
-	A possible workaround for the situation of a small dataset was dynamic data-augmentation, but the cost of SOTA models
-	remained very high.\\\\
-	This paper aims to learn an unconditional GAN requiring, at the same time, low computational power and small datasets
-	for training. In order to do this, FastGAN has a "fast-learning" generator $G$ and a discriminator $D$ able to continuously
-	return signals very useful to train G. FastGAN reaches the above objectives based on the following two techniques:
-	\begin{itemize}
-		\setlength\itemsep{0.01em}
-		\item \textbf{Skip-Layer channel-wise Excitation module}: revises channel responses on high-scale feature-maps using
-			  low-scale activations and allows to reach a faster training using a more robust gradient flow throughout the 
-			  model weights;
-		\item \textbf{Self-supervised discriminator $D$ trained as a feature-encoder with an extra decoder}: this discriminator
-			  is forced to learn a feature-map that covers more regions from an image in input; in this way it gives richer
-			  signals in order to train $G$. It has been shown that auto-encoding is the best self-supervision strategy for $D$.
-	\end{itemize} 
+State-of-the-art (SOTA) GANs, despite having a lot of usage (implications) in real life applications, 
+such as photo editing, diseases diagnosis, image translation and artistic creation, their high cost in 
+terms of computational power and dataset size made their usage very limited in contexts with a very small
+computational budget. More specifically, there are three main problems afflicting GANs' training:
+\begin{itemize}
+	\setlength\itemsep{0.01em}
+	\item \textit{Accelerate training}: this problem has been approached from various perspectives, but this brought
+			only very limited improvements in training speed, while not enhancing quality within the shortened training time;
+	\item \textit{High resolution training}: this made GAN much harder to converge, since the increased model parameters
+			lead to a more rigid gradient flow to optimize $G$, and since the target distribution made by images at high resolution
+			is super sparse. There was some approaches trying to solve this problem, but they led to a slightly greater computational
+			cost, consuming more GPU memory and requiring more training time;
+	\item \textit{Stabilize training}: Mode-collapse on generator $G$ is a big challenge when training GANs, given fewer training
+			samples and lower computational power and budgets (smaller batch-size). $D$ is unable to provide consistent gradients to 
+			train G, since is more likely to be overfitting on the datasets. There was, also here, approaches that tryed to solve this 
+			problem, but they have limited using scenario and image domain, and worked only on low resolution images with unlimited computing
+			resources.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Images/problems.png}
+	\caption{FastGAN training challenges.} 
+\end{figure}
+In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models,
+but this solution had the disadvantage of the lack of guarantee to find dataset compatible with the pre-training. 
+Another way was fine-tuning, but this gave even worse results in terms of performance.
+Those approaches were not "considered" by people who wanted to train their model from scratch, in order to 
+avoid biases typic of the fine-tuned pre-trained models; in other cases there were the necessity to train models
+with datasets containing less than 100 images.
+A possible workaround for the situation of a small dataset was dynamic data-augmentation, but the cost of SOTA models
+remained very high.\\\\
+This paper aims to learn an unconditional GAN requiring, at the same time, low computational power and small datasets
+for training. In order to do this, FastGAN has a "fast-learning" generator $G$ and a discriminator $D$ able to continuously
+return signals very useful to train G. FastGAN reaches the above objectives based on the following two techniques:
+\begin{itemize}
+	\setlength\itemsep{0.01em}
+	\item \textbf{Skip-Layer channel-wise Excitation module}: revises channel responses on high-scale feature-maps using
+			low-scale activations and allows to reach a faster training using a more robust gradient flow throughout the 
+			model weights;
+	\item \textbf{Self-supervised discriminator $D$ trained as a feature-encoder with an extra decoder}: this discriminator
+			is forced to learn a feature-map that covers more regions from an image in input; in this way it gives richer
+			signals in order to train $G$. It has been shown that auto-encoding is the best self-supervision strategy for $D$.
+\end{itemize} 
 
 % METHOD -------------------------------------------------------------------------
 
@@ -249,17 +249,88 @@ of performances:
 	\mathcal{L}_G = - \mathbb{E}_{z \sim \mathcal{N}}[D(G(z))]
 \end{equation}
 
+% DATASET -------------------------------------------------------------------------	
+\newpage
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{\thepage}
+\rhead{Mauro Ficorella, Martina Turbessi, Valentina Sisti}
+\lhead{FastGAN}
 
-% CAPITOLO 2 -------------------------------------------------------------------------	
-
-\section{NOME}
+\section{Dataset}
 \large
+The authors of the original paper used multiple datasets on both $256 \times 256$ and $1024 \times 1024$ resolutions. More specifically
+they used:
+\begin{itemize}
+	\setlength\itemsep{0.01em}
+	\item {	
+		Animal-Face Dog and Cat
+	}
+	\item {
+		100-Shot-Obama
+	}
+	\item {
+		Panda
+	}
+	\item {
+		Grumpy-cat
+	}
+	\item {
+		Flickr-Face-HQ
+	}
+	\item {
+		Oxford-flowers
+	}
+	\item {
+		Art paintings from WikiArt
+	}
+	\item {
+		Photographs on natural landscape from Unsplash
+	}
+	\item {
+		Pokemon
+	}
+	\item {
+		Anime face
+	}
+	\item {
+		Skull
+	}
+	\item {
+		Shell
+	}
+\end{itemize} 
+Since our hardware was not powerfull enough to do the training on photos with a resolution of $1024 \times 1024$, we decided to use only
+datasets of resolution $256 \times 256$, and, more in details, we used the following datasets: Panda, Obama, Animal-Face Dog and Cat,
+Grumpy-cat.\\\\
+\begin{minipage}[t]{0.2\textwidth}
+	\includegraphics[width=1\textwidth]{Images/panda.jpg}
+\end{minipage}
+\begin{minipage}[t]{0.2\textwidth} 
+	\includegraphics[width=1\textwidth]{Images/obama.jpg}
+\end{minipage}
+\begin{minipage}[t]{0.2\textwidth} 
+	\includegraphics[width=1\textwidth]{Images/grumpy.jpg}
+\end{minipage}
+\begin{minipage}[t]{0.2\textwidth} 
+	\includegraphics[width=1\textwidth]{Images/cat.jpg}
+\end{minipage}
+\begin{minipage}[t]{0.2\textwidth} 
+	\includegraphics[width=1\textwidth]{Images/dog.jpg}
+\end{minipage}
 
+% IMPLEMENTATION -------------------------------------------------------------------------
 
-% CAPITOLO 3 -------------------------------------------------------------------------
-
-\section{NOME}
+\section{Implementation}
 \large
+Traditional GANs always required a lot of computational power in order to obtain good results.\\
+Conversely, FastGAN has the big advantage of obtaining good results in a reasonable time also on non server-level hardware.
+In fact we got decent results on NVIDIA GeForce RTX 2070 SUPER and, specially, on NVIDIA GeForce GTX 1050-Ti, 
+respectively equipped with 8GB and 4GB of VRAM. More specifically we were able to train the GAN for 1000/2000 epochs: this
+took $\sim10$hrs on the 2070 SUPER, and $\sim24$hrs on the 1050-Ti. Those are very good results because, with the traditional
+GANs, mostly on the 1050-Ti, probably it would have been impossible even just letting the train start.\\\\
+Regarding the code implementation, while the original paper proposed a PyTorch version, we decided to reimplement it using 
+TensorFlow.
 
 
 % CAPITOLO 4 -------------------------------------------------------------------------
