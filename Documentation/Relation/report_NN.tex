@@ -70,7 +70,7 @@ bottom=20mm]{geometry}
 	
 	\normalsize\MakeUppercase{\textbf{Abstract}\vspace*{0.35cm}}
 	
-	\begin{minipage}[t]{0.7\textwidth}
+	\begin{minipage}[t]{0.6\textwidth}
 	\textit{The main aim of FastGAN is to allow users with limited computing budget and resources to 
 	train a GAN. Moreover it eliminates the requirement of a big dataset for training.
 	These are big advantages since traditional GANs required a lot of GPU computational power
@@ -87,7 +87,7 @@ bottom=20mm]{geometry}
 
 \end{center}
 
-\vspace*{1.5cm}
+\vspace*{1cm}
 % INTRODUCTION --------------------------------------------------------------------
 \section{Introduction}
 \large
@@ -253,32 +253,54 @@ of performances:
 The model is built starting from a baseline model with the two above proposed techniques (SLE and self-supervised discriminator).
 The baseline model is made of the following techniques (based on Deep Convolutional GAN):
 \begin{itemize}
-	\setlength\itemsep{0.01em}
 	\item {	
-		\textit{Batch-normalization:} aims to avoid unstable gradients, to reduce internal covariate shift, and so to accelerate the 
-		training of deep neural networks. All of this is achieved by a normalization step that fixes the means and variances of layer inputs.
-		This has also a beneficial effect on the gradient flow through the network, reducing dependence of gradients on the scale of the 
-		parameters or of their initial values. This allows to use much higher learning rates without risk of divergence.
-		Ideally batch-normalization should also normalize each layer based on the entire dataset; instead it normalizes using mini-batch statistics.
-	}
-	\item {
-		\textit{ADAM optimization on G:} ADAM is a replacement optimization algorithm for stochastic gradient descent for training deep learning
-		models; it combines the best properties of AdaGrad and RMSprop algorithms, to provide an optimization algorithm that can handle
-		sparse gradients on noisy problems.\\
-		In other words, ADAM can be looked at as a combination of both RMSprop and Stochastic Gradient Descent (SGD) with momentum: it uses
-		the squared gradients to scale the learning rate like RMSprop and it takes advantage of momentum by using moving average of the gradient
-		instead of gradient itself like SGD with momentum. 
+		\vspace{-4cm}
+		\begin{minipage}[t]{0.7\textwidth}
+			\textit{Batch-normalization:} aims to avoid unstable gradients, to reduce internal covariate shift, and so to accelerate the 
+			training of deep neural networks. All of this is achieved by a normalization step that fixes the means and variances of layer inputs.
+			This has also a beneficial effect on the gradient flow through the network, reducing dependence of gradients on the scale of the 
+			parameters or of their initial values. This allows to use much higher learning rates without risk of divergence.
+			Ideally batch-normalization should also normalize each layer based on the entire dataset; instead it normalizes using mini-batch statistics.
+		\end{minipage}
+		\hspace{0.02\linewidth}
+		\begin{minipage}{0.2\textwidth} 
+			\vspace{5cm}
+			\includegraphics[width=1\textwidth]{Images/batchNorm.png}
+		\end{minipage}
 	}
 	\item {
 		\textit{Differentiable-augmentation:} is a set of differentiable image transformations used to augment data during training. The
 		transformations are applied to both real and generated images. It enables the gradients to be propagated trough the augmentation
 		back to the generator, regularizes the discriminator without manipulating the target distribution and maintains the balance of training
-		dynamics. There are three choices of transformation: Translation, CutOut and Color.
+		dynamics. There are three choices of transformation: Translation, CutOut and Color.\\\\
+		\includegraphics[width=0.9\textwidth]{Images/diffAugment.png}
 	}
 	\item {
-		\textit{GLU instead of ReLU in G:} Gated Linear Unit computes $GLU(a,b) = a \otimes \sigma(b)$, where $b$ is the gate that controls
-		what information from $a$ is passed up to the following layer. This gating mechanism allows selection of features that are important
-		for predicting the next feature; it also provides a mechanism to learn and pass along just the relevant info.
+		\begin{minipage}[t]{0.5\textwidth}
+			\textit{ADAM optimization on G:} ADAM is a replacement optimization algorithm for stochastic gradient descent for training deep learning
+			models; it combines the best properties of AdaGrad and RMSprop algorithms, to provide an optimization algorithm that can handle
+			sparse gradients on noisy problems.\\
+			In other words, ADAM can be looked at as a combination of both RMSprop and Stochastic Gradient Descent (SGD) with momentum: it uses
+			the squared gradients to scale the learning rate like RMSprop and it takes advantage of momentum by using moving average of the gradient
+			instead of gradient itself like SGD with momentum. \\
+		\end{minipage}
+		\hspace{0.02\linewidth}
+		\begin{minipage}[t]{0.4\textwidth} 
+			\vspace{-0.5cm}
+			\includegraphics[width=1\textwidth]{Images/Adam.png}
+		\end{minipage}	
+	}
+	\item {
+		\begin{minipage}[t]{0.5\textwidth}
+			\textit{GLU instead of ReLU in G:} Gated Linear Unit computes $GLU(a,b) = a \otimes \sigma(b)$, where $b$ is the gate that controls
+			what information from $a$ is passed up to the following layer. This gating mechanism allows selection of features that are important
+			for predicting the next feature; it also provides a mechanism to learn and pass along just the relevant info.
+		\end{minipage}
+		\hspace{0.02\linewidth}
+		\begin{minipage}[t]{0.4\textwidth} 
+			\vspace{-0.5cm}
+			\includegraphics[width=1\textwidth]{Images/GLU.png}
+		\end{minipage}
 	}
 \end{itemize} 
 
