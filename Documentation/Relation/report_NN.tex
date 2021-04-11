@@ -15,7 +15,8 @@ bottom=20mm]{geometry}
 \usepackage{amssymb}
 \usepackage{sidecap}
 \usepackage{hyperref}
-\usepackage{titlesec}\usepackage{array}
+\usepackage{titlesec}
+\usepackage{array}
 
 
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}  %per centrare le colonne nelle tabelle
@@ -376,25 +377,12 @@ Pokemon, Anime face, Skull, Shell.\\\\
 Since our hardware was not powerfull enough to do the training on photos with a resolution of $1024 \times 1024$, we decided to use only
 datasets of resolution $256 \times 256$, and, more in details, we used the following datasets: 
 \begin{itemize}
-	\item {			 
-
-	}
-	\item {
-
-	}
-	\item {
-
-	}
-	\item {
-
-	}
-	\item {
-
-	}
+	\item Panda
+	\item Obama
+	\item Animal-Face Dog
+	\item Animal-Face Cat
+	\item Grumpy-cat\\
 \end{itemize}
-
-Panda, Obama, Animal-Face Dog and Cat,
-Grumpy-cat.\\\\
 \begin{minipage}[t]{0.2\textwidth}
 	\includegraphics[width=1\textwidth]{Images/panda.jpg}
 \end{minipage}
@@ -411,7 +399,7 @@ Grumpy-cat.\\\\
 	\includegraphics[width=1\textwidth]{Images/dog.jpg}
 \end{minipage}
 
-% CAPITOLO 4 -------------------------------------------------------------------------
+% EXPERIMENTS -------------------------------------------------------------------------
 
 \section{Experiments}
 \large
@@ -457,29 +445,81 @@ Regarding training times and output images:
 		\end{figure}
 	}
 \end{itemize} 
-In the following table we summarize, for each dataset, all training parameters and results:
+As we can see in the above images and in the following table, thanks to FastGAN, we obtained
+considerable results on small datasets and even on a 4GB 1050-Ti.\\
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ |M{3.8cm}|M{2.5cm}|M{2.5cm}|M{2.5cm}|M{2.5cm}|M{2.5cm}| }
+	\footnotesize
+	\begin{tabular}{ |M{3.4cm}|M{2.3cm}|M{2.3cm}|M{2.3cm}|M{2.3cm}|M{2.3cm}| }
 		\cline{2-6}
 		\multicolumn{1}{c|}{}&	
-		\multicolumn{4}{c|}{\large \textbf{NVIDIA GeForce RTX 2070 SUPER}}&
-		\multicolumn{1}{M{2.5cm}|}{\large \textbf{NVIDIA GeForce GTX 1050-Ti}}\\
+		\multicolumn{4}{c|}{\textbf{NVIDIA GeForce RTX 2070 SUPER}}&
+		\multicolumn{1}{M{2.5cm}|}{\textbf{NVIDIA GeForce GTX 1050-Ti}}\\
 		\hline
-		\large\textbf{Dataset} 		&\large\textbf{Panda}	&\large\textbf{Dogs} 	&\large\textbf{Obama}	&\large\textbf{Grumpy Cat}	&\large\textbf{Cats}\\
+		\textbf{Dataset} 			&\textbf{Panda}			&\textbf{Dogs} 			&\textbf{Obama}			&\textbf{Grumpy Cat}		&\textbf{Cats}\\
 		\hline
-		\textbf{Number of images}   & 100 					& 389 					& 100 					& 100						&159\\
-		\textbf{Resolution}   		& 256$\times$256 		& 256$\times$256 		& 256$\times$256 		& 256$\times$256			&256$\times$256\\
+		\textbf{Number of images}   & 100 					& 389 					& 100 					& 100						& 159\\
+		\textbf{Resolution}   		& 256$\times$256 		& 256$\times$256 		& 256$\times$256 		& 256$\times$256			& 256$\times$256\\
 		\textbf{Batch size}			& 4						& 8 					& 8						& 8							& 4\\
-		\textbf{Epochs} 			& 1000					& 1400 					& 1700 					& 1000						&1800\\
-		\textbf{Epoch Time} 		& $\sim$15s 			& $\sim$35s				& $\sim$15s				& $\sim$14s					&$\sim$103s\\
-		\textbf{FID}				& $\sim$28				& $\sim$35				& $\sim$75				& $\sim$129					&$\sim$108\\						
+		\textbf{Epochs} 			& 1000					& 1400 					& 1700 					& 1000						& 1800\\
+		\textbf{Epoch Time} 		& $\sim$15s 			& $\sim$35s				& $\sim$15s				& $\sim$14s					& $\sim$103s\\
+		\textbf{FID}				& $\sim$28				& $\sim$35				& $\sim$75				& $\sim$129					& $\sim$108\\						
 		\hline
 	\end{tabular}
 	\newline\newline
-	\caption{title}\label{tab1}
+	\caption{Training parameters and results on NVIDIA GeForce RTX 2070 SUPER and NVIDIA GeForce GTX 1050-Ti}
 \end{table}
-%TODO: scrivere che abbiamo fatto la griglia per farne vedere di più
+
+\subsection{Comparison with original paper's results}
+
+\begin{table}[H]
+	\centering
+	\footnotesize
+	\begin{tabular}{ |M{2cm}M{2cm}M{2cm}M{2cm}M{2cm}M{2cm}M{2cm}| }
+		%\cline{2-6}
+		%\multicolumn{1}{c|}{}&	
+		%\multicolumn{4}{c|}{\large \textbf{NVIDIA GeForce RTX 2070 SUPER}}&
+		%\multicolumn{1}{M{2.5cm}|}{\large \textbf{NVIDIA GeForce GTX 1050-Ti}}\\
+		\hline
+			&		&\textbf{Panda}		&\textbf{Dogs} 		&\textbf{Obama}		&\textbf{Grumpy Cat}		&\textbf{Cats}			\\
+		\hline
+		\multicolumn{1}{|c}{}&	
+		\multicolumn{1}{c|}{\textbf{Number of images}}&
+		\multicolumn{1}{c}{100}&
+		\multicolumn{1}{c}{389}&
+		\multicolumn{1}{c}{100}&
+		\multicolumn{1}{c}{100}&
+		\multicolumn{1}{c|}{159}\\				
+		\hline
+		\multicolumn{1}{|M{2cm}|}{\textbf{FID on one RTX 2080-Ti}}&	
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c}{10.03}&
+		\multicolumn{1}{c}{50.66}&
+		\multicolumn{1}{c}{41.05}&
+		\multicolumn{1}{c}{26.65}&
+		\multicolumn{1}{c|}{35.11}\\
+		\hline
+		\multicolumn{1}{|M{2cm}|}{\textbf{FID on one RTX 2070 SUPER}}&	
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c}{$\sim$28}&
+		\multicolumn{1}{c}{$\sim$35}&
+		\multicolumn{1}{c}{$\sim$75}&
+		\multicolumn{1}{c}{$\sim$129}&
+		\multicolumn{1}{c|}{}\\
+		\hline
+		\multicolumn{1}{|M{2cm}|}{\textbf{FID on one GTX 1050-Ti}}&	
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c}{}&
+		\multicolumn{1}{c|}{$\sim$108}\\
+		\hline
+	\end{tabular}
+	\newline\newline
+	\caption{FID score comparison between original paper (RTX 2080-Ti) and ours (NVIDIA GeForce RTX 2070 SUPER and NVIDIA GeForce GTX 1050-Ti)}
+\end{table}
+
 
 % CAPITOLO 5 -------------------------------------------------------------------------
 
