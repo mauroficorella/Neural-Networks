@@ -322,15 +322,17 @@ The baseline model is made of the following techniques (based on Deep Convolutio
 Traditional GANs always required a lot of computational power in order to obtain good results.\\
 Conversely, FastGAN has the big advantage of obtaining good results in a reasonable time also on non server-level hardware.
 In fact we got decent results on NVIDIA GeForce RTX 2070 SUPER and, specially, on NVIDIA GeForce GTX 1050-Ti, 
-respectively equipped with 8GB and 4GB of VRAM. More specifically we were able to train the GAN for 1000/2000 epochs: this
-took $\sim10$hrs on the 2070 SUPER, and $\sim24$hrs on the 1050-Ti. Those are very good results because, with the traditional
+respectively equipped with 8GB and 4GB of VRAM. More specifically we were able to train the GAN for 1000/2000 epochs: for each dataset this
+took between $\sim$5hrs and $\sim$14hrs on the 2070 SUPER, and $\sim$2 days on the 1050-Ti. Those are very good results because, with the traditional
 GANs, mostly on the 1050-Ti, probably it would have been impossible even just letting the train start.\\\\
 Regarding the code implementation, while the original paper proposed a PyTorch version, we decided to reimplement it using 
 TensorFlow.\\\\
 Since the training needed a lot of time to execute, we used a checkpoint approach: in this way 
 we were able to save the training status and resume the training whenever we wanted. 
 More specifically we saved the current epoch number and the current weights of both the generator and
-the discriminator. 
+the discriminator.\\\\
+Finally, we decided to generate output images in a grid format, in order to show more of them at the same time.
+
 
 \subsubsection{Requirements}
 \large
@@ -368,48 +370,30 @@ this helps in maintaining high performances.
 \section{Dataset}
 \large
 The authors of the original paper used multiple datasets on both $256 \times 256$ and $1024 \times 1024$ resolutions. More specifically
-they used:
-\begin{itemize}
-	\setlength\itemsep{0.01em}
-	\item {	
-		Animal-Face Dog and Cat
-	}
-	\item {
-		100-Shot-Obama
-	}
-	\item {
-		Panda
-	}
-	\item {
-		Grumpy-cat
-	}
-	\item {
-		Flickr-Face-HQ
-	}
-	\item {
-		Oxford-flowers
-	}
-	\item {
-		Art paintings from WikiArt
-	}
-	\item {
-		Photographs on natural landscape from Unsplash
-	}
-	\item {
-		Pokemon
-	}
-	\item {
-		Anime face
-	}
-	\item {
-		Skull
-	}
-	\item {
-		Shell
-	}
-\end{itemize} 
+they used: Animal-Face Dog and Cat, 100-Shot-Obama, Panda, Grumpy-cat, Flickr-Face-HQ, 
+Oxford-flowers, Art paintings from WikiArt, Photographs on natural landscape from Unsplash, 
+Pokemon, Anime face, Skull, Shell.\\\\ 
 Since our hardware was not powerfull enough to do the training on photos with a resolution of $1024 \times 1024$, we decided to use only
-datasets of resolution $256 \times 256$, and, more in details, we used the following datasets: Panda, Obama, Animal-Face Dog and Cat,
+datasets of resolution $256 \times 256$, and, more in details, we used the following datasets: 
+\begin{itemize}
+	\item {			 
+
+	}
+	\item {
+
+	}
+	\item {
+
+	}
+	\item {
+
+	}
+	\item {
+
+	}
+\end{itemize}
+
+Panda, Obama, Animal-Face Dog and Cat,
 Grumpy-cat.\\\\
 \begin{minipage}[t]{0.2\textwidth}
 	\includegraphics[width=1\textwidth]{Images/panda.jpg}
@@ -431,11 +415,55 @@ Grumpy-cat.\\\\
 
 \section{Experiments}
 \large
+Here we show our experiments done on the datasets described in the previous section on two different
+GPUs: NVIDIA GeForce RTX 2070 SUPER and NVIDIA GeForce GTX 1050-Ti. All the involved datasets consist 
+of few images, where all of them have a resolution of 256$\times$256.\\\\
+Regarding training times and output images:
+\begin{itemize}
+	\item {			 
+		\textbf{\textit{Panda dataset:}} $\sim$4.5hrs for 1000 epochs on the 2070 SUPER
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\textwidth]{Images/panda_exp.jpg}
+		\end{figure}
+	}
+	\item {
+		\textbf{\textit{Dogs dataset:}} $\sim$13.5hrs for 1400 epochs on the 2070 SUPER
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\textwidth]{Images/dogs_exp.jpg}
+		\end{figure}
+	}
+	\item {
+		\textbf{\textit{Obama dataset:}} $\sim$7hrs for 1700 epochs on the 2070 SUPER
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\textwidth]{Images/obama_exp.jpg}
+		\end{figure}
+	}
+	\item {
+		\textbf{\textit{Grumpy-cat dataset:}} $\sim$4.5hrs for 1000 epochs on the 2070 SUPER
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\textwidth]{Images/grumpy_exp.jpg}
+		\end{figure}
+	}
+	\vspace*{4cm}
+	\item {
+		\textbf{\textit{Cats dataset:}} $\sim$45hrs for 1800 epochs on the 1050-Ti
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\textwidth]{Images/cats_exp.png}
+		\end{figure}
+	}
+\end{itemize} 
+In the following table we summarize, for each dataset, all training parameters and results:
 \begin{table}[H]
+	\centering
 	\begin{tabular}{ |M{3.8cm}|M{2.5cm}|M{2.5cm}|M{2.5cm}|M{2.5cm}|M{2.5cm}| }
 		\cline{2-6}
 		\multicolumn{1}{c|}{}&	
-		\multicolumn{4}{c|}{\large \textbf{NVIDIA RTX 2070 SUPER}}&
+		\multicolumn{4}{c|}{\large \textbf{NVIDIA GeForce RTX 2070 SUPER}}&
 		\multicolumn{1}{M{2.5cm}|}{\large \textbf{NVIDIA GeForce GTX 1050-Ti}}\\
 		\hline
 		\large\textbf{Dataset} 		&\large\textbf{Panda}	&\large\textbf{Dogs} 	&\large\textbf{Obama}	&\large\textbf{Grumpy Cat}	&\large\textbf{Cats}\\
@@ -444,7 +472,7 @@ Grumpy-cat.\\\\
 		\textbf{Resolution}   		& 256$\times$256 		& 256$\times$256 		& 256$\times$256 		& 256$\times$256			&256$\times$256\\
 		\textbf{Batch size}			& 4						& 8 					& 8						& 8							& 4\\
 		\textbf{Epochs} 			& 1000					& 1400 					& 1700 					& 1000						&1800\\
-		\textbf{Epoch Time} 		& $\sim$15s 			& $\sim$35s				& $\sim$15s				& $\sim$14s					&TODO\\
+		\textbf{Epoch Time} 		& $\sim$15s 			& $\sim$35s				& $\sim$15s				& $\sim$14s					&$\sim$103s\\
 		\textbf{FID}				& $\sim$28				& $\sim$35				& $\sim$75				& $\sim$129					&$\sim$108\\						
 		\hline
 	\end{tabular}
@@ -452,9 +480,6 @@ Grumpy-cat.\\\\
 	\caption{title}\label{tab1}
 \end{table}
 %TODO: scrivere che abbiamo fatto la griglia per farne vedere di più
-
-
-
 
 % CAPITOLO 5 -------------------------------------------------------------------------
 
