@@ -471,15 +471,25 @@ considerable results on small datasets and even on a 4GB 1050-Ti.\\
 \end{table}
 
 \subsection{Comparison with original paper's results}
-
+\vspace*{-1.3cm}
+\begin{center}
+	\begin{minipage}[t]{0.48\textwidth} 
+		\begin{figure}[H]
+			\includegraphics[width=1\textwidth]{Images/comparison.jpg}
+			\caption{Original paper results}
+		\end{figure}
+	\end{minipage}
+	\begin{minipage}[t]{0.48\textwidth} 
+		\begin{figure}[H]
+			\includegraphics[width=1\textwidth]{Images/experiment.jpg}
+			\caption{Our results}
+		\end{figure}
+	\end{minipage}
+\end{center}
 \begin{table}[H]
 	\centering
 	\footnotesize
 	\begin{tabular}{ |M{2cm}M{2cm}M{2cm}M{2cm}M{2cm}M{2cm}M{2cm}| }
-		%\cline{2-6}
-		%\multicolumn{1}{c|}{}&	
-		%\multicolumn{4}{c|}{\large \textbf{NVIDIA GeForce RTX 2070 SUPER}}&
-		%\multicolumn{1}{M{2.5cm}|}{\large \textbf{NVIDIA GeForce GTX 1050-Ti}}\\
 		\hline
 			&		&\textbf{Panda}		&\textbf{Dogs} 		&\textbf{Obama}		&\textbf{Grumpy Cat}		&\textbf{Cats}			\\
 		\hline
@@ -520,106 +530,14 @@ considerable results on small datasets and even on a 4GB 1050-Ti.\\
 	\caption{FID score comparison between original paper (RTX 2080-Ti) and ours (NVIDIA GeForce RTX 2070 SUPER and NVIDIA GeForce GTX 1050-Ti)}
 \end{table}
 
+% CONCLUSION -------------------------------------------------------------------------
 
-% CAPITOLO 5 -------------------------------------------------------------------------
-
-\section{NOME}
+\section{Conclusion}
 \large
-
-
-% CAPITOLO 6 -------------------------------------------------------------------------
-
-\section{NOME}
-\large
-
-
-% CAPITOLO 7 -------------------------------------------------------------------------
-
-\section{NOME}
-\large
-
-
-% CAPITOLO 8 -------------------------------------------------------------------------
-
-\section{NOME}
-\large
-
+As we discussed, given small datasets (sub-hundred images) and limited computing resources, GAN training can be stabilized
+with an improved synthesis quality using skip-layer excitation mechanism (SLE) and self-supervised regularization on
+the discriminator, which boost synthesis performance of the GAN.
+Obviously, we obtained worse results with respect to the original paper, since we had more limited computing resources; said that,
+we still got considerable results.
 
 \end{document}
-
-% COSE UTILI --------------------------------------------------------------------------
-
-%\section*{NOME}
-%\subsection*{1.1}
-%\setlength{\intextsep}{0pt} --> elimina lo spazio
-%\vspace{-3mm}
-%\hspace*{0cm}
-
-% Font -------------------------------------
-
-%GRASSETTO: \textbf
-
-% Simboli ---------------------------------
-
-%$\leftarrow$
-
-% Elenco puntato ----------------------
-
-%\begin{itemize}
-%\setlength\itemsep{0.01em}
-%\item 1
-%\item 2
-%\end{itemize}
-
-% Graffa grande -----------------------
-
-%\[  
-%    \left\{ 
-%    \begin{array}{ll} 
-%      \mbox{1}
-%      \mbox{2}
-%    \end{array}
-%    \mbox{riga al lato}
-%   \right. 
-%\]
-
-% Multicolonne --------------------------
-
-% \begin{multicols}{2}
-% \columnbreak
-% \end{multicols}
-
-% Algoritmi -------------------------------
-
-%\renewcommand{\thealgorithm}{1.\arabic{algorithm}}
-%\setcounter{algorithm}{0}
-%\begin{algorithm}
-%\footnotesize
-%\caption{Nome}
-%\textbf{Input:} \\
-%\textbf{Output:} 
-
-%\begin{algorithmic}[1]
-%\STATE 
-%\FOR{ = 0 \TO i = n} ---- \ENDFOR
-%\IF{} ---- \ELSIF{} ---- \ENDIF
-%\RETURN 
-%\end{algorithmic}
-%\end{algorithm}
-
-% Minipage ------------------------------
-
-%\begin{minipage}[t]{0.5\textwidth}
-
-% queste 3 righe vanno attaccate
-%\end{minipage}
-%\hspace{0.02\linewidth}
-%\begin{minipage}[t]{0.47\textwidth} 
-
-%\begin{minipage}[t]{0.3\textwidth} 
-%\end{minipage}
-
-% Proof --------------------------------
-%\begin{proof}[\textbf{per cambiare nome}]
-%\end{proof}
-
