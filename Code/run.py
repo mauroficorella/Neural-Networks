@@ -11,7 +11,6 @@ import time
 import tensorflow as tf
 
 parser = argparse.ArgumentParser()
-
 parser.add_argument("--img_extension", type=str, default="jpg",
                     help="Extension of the images used for the training (png, jpg, jpeg). Default is jpg.")
 parser.add_argument("--resolution", type=int, default=256,
@@ -35,7 +34,6 @@ parser.add_argument("--FID-freq", type=int, default=1,
                     help="This tells at what frequency (in terms of epochs) the FID value will be evaluated.")
 parser.add_argument("--FID-num-of-imgs", type=int, default=128,
                     help="This tells how many images will be used for the FID value calculation.")
-
 args = parser.parse_args()
 print(args)
 
@@ -62,11 +60,8 @@ def signalHandler(sig, frame):
 
 GPUs = tf.config.list_physical_devices("GPU")
 _ = [tf.config.experimental.set_memory_growth(x, True) for x in GPUs]
-
-
 G_weights = None
 D_weights = None
-
 out_folder = Path("./Results") / args.out_folder_name
 checkpoints_folder = out_folder / "Checkpoints"
 if out_folder.is_dir():
@@ -76,15 +71,11 @@ if out_folder.is_dir():
         start_epoch = int(f.read())
 if not checkpoints_folder.is_dir():
     checkpoints_folder.mkdir(parents=True)
-
 tensorboard_logs_folder = out_folder / "Tensorboard_logs"
 if not tensorboard_logs_folder.is_dir():
     tensorboard_logs_folder.mkdir(parents=True)
-
-
 dataset = getDataset(batch=batch, dataset_folder=dataset_folder, resolution=resolution,
                      flip_augment=True, img_extension=args.img_extension, size_buff_shuffle=500)
-
 G = Generator(resolution)
 G_out = G.initialize(batch)
 if G_weights is not None:
@@ -94,7 +85,6 @@ if G_weights is not None:
 else:
     start_epoch = 0
 print(f"[G] Output shape: {G_out.shape}.")
-
 D = Discriminator(resolution)
 D_out = D.initialize(batch)
 if D_weights is not None:
@@ -106,39 +96,28 @@ else:
 print(f"[D] Real_fake output shape: {D_out[0].shape}.")
 print(f"[D] Image output shape: {D_out[1].shape}.")
 print(f"[D] Image part output shape: {D_out[2].shape}.")
-
 G_optim = tf.optimizers.Adam(learning_rate=G_learning_rate)
 D_optim = tf.optimizers.Adam(learning_rate=D_learning_rate)
-
 if FID:
-    # Model for the FID calculation
     FID_inception_model = InceptionModel(height=resolution, width=resolution)
-
 test_input_size = 25
 test_input_generation = getInputNoise(test_input_size)
 test_images = getTestImages(test_input_size, dataset_folder, resolution, img_extension)
-
 tensorboard_file_writer = tf.summary.create_file_writer(str(tensorboard_logs_folder))
 tensorboard_file_writer.set_as_default()
-
 G_loss_metric = tf.keras.metrics.Mean()
 D_loss_metric = tf.keras.metrics.Mean()
 D_real_fake_loss_metric = tf.keras.metrics.Mean()
 D_I_reconstruction_loss_metric = tf.keras.metrics.Mean()
 D_I_part_reconstruction_loss_metric = tf.keras.metrics.Mean()
-
 diff_augment_policies = None
 if diff_augment:
     diff_augment_policies = "color,translation,cutout"
-
 signal.signal(signal.SIGINT, signalHandler)
-
 FID_score_best = 5000
-
 for epoch in range(start_epoch, epochs):
     start = time.perf_counter()
     print(f"Epoch {epoch} -------------")
-
     # TRAINING PHASE
     for step, batch_img in enumerate(dataset):
         G_loss, D_loss, D_real_fake_loss, D_I_reconstruction_loss, D_I_part_reconstruction_loss = train(
@@ -148,13 +127,11 @@ for epoch in range(start_epoch, epochs):
             optim_D=D_optim,
             images=batch_img,
             diff_augm_policies=diff_augment_policies)
-
         G_loss_metric(G_loss)
         D_loss_metric(D_loss)
         D_real_fake_loss_metric(D_real_fake_loss)
         D_I_reconstruction_loss_metric(D_I_reconstruction_loss)
         D_I_part_reconstruction_loss_metric(D_I_part_reconstruction_loss)
-
     # TESTING PHASE
     if FID:
         if epoch % FID_freq == 0:
@@ -167,13 +144,11 @@ for epoch in range(start_epoch, epochs):
                                  num_imgs=FID_num_of_imgs)
             print(f"[FID] {FID_score:.2f}.")
             tf.summary.scalar("FID_score", FID_score, epoch)
-
     tf.summary.scalar("G_loss/G_loss", G_loss_metric.result(), epoch)
     tf.summary.scalar("D_loss/D_loss", D_loss_metric.result(), epoch)
     tf.summary.scalar("D_loss/D_real_fake_loss", D_real_fake_loss_metric.result(), epoch)
     tf.summary.scalar("D_loss/D_I_reconstruction_loss", D_I_reconstruction_loss_metric.result(), epoch)
     tf.summary.scalar("D_loss/D_I_part_reconstruction_loss", D_I_part_reconstruction_loss_metric.result(), epoch)
-
     elapsed = time.perf_counter() - start
     print(f"Epoch number: {epoch} - "
           f"G Loss value: {G_loss_metric.result():.4f} | "
@@ -182,14 +157,12 @@ for epoch in range(start_epoch, epochs):
           f"D I recon loss: {D_I_reconstruction_loss_metric.result():.4f} | "
           f"D I part recon loss: {D_I_part_reconstruction_loss_metric.result():.4f} | "
           f"Elapsed time: {elapsed:.3f} seconds.")
-
     G_loss_metric.reset_states()
     D_loss_metric.reset_states()
     D_real_fake_loss_metric.reset_states()
     D_I_part_reconstruction_loss_metric.reset_states()
     D_I_reconstruction_loss_metric.reset_states()
-
-    # SAVE THE WEIGHTS ONLY IF THE FID SCORE IS BETTER (LOWER) THAN THE PREVIOUS ONE
+    # Save the weights only if the FID score is better (lower) than the previous one
     if FID:
         if FID_score < FID_score_best:
             FID_score_best = FID_score
@@ -197,12 +170,10 @@ for epoch in range(start_epoch, epochs):
             D_checkpoint_path = str(checkpoints_folder / "D_checkpoint.h5")
             G.save_weights(G_checkpoint_path)
             D.save_weights(D_checkpoint_path)
-
     # Generate test images
     generated_imgs = G(test_input_generation, training=False)
     generated_imgs = denormalizeImages(generated_imgs, dtype=tf.uint8).numpy()
     saveImages(epoch, generated_imgs, out_folder / "Generated_images", 5, 5)
-
     # Generate reconstructions from Discriminator
     _, decoded_imgs, decoded_part_imgs = D(test_images, training=False)
     decoded_imgs = denormalizeImages(decoded_imgs, dtype=tf.uint8).numpy()
@@ -210,7 +181,6 @@ for epoch in range(start_epoch, epochs):
     saveImages(epoch, decoded_imgs, out_folder / "Reconstructed_whole_images", 5, 5)
     saveImages(epoch, decoded_part_imgs,
                out_folder / "Reconstructed_part_images", 5, 5)
-
     if epoch == epochs - 1:
         file = open(checkpoints_folder / "epoch_file.txt", "w+")
         file.write(str(epoch))

@@ -6,15 +6,12 @@ from scipy import linalg
 
 def getEncodings(model: tf.keras.models.Model, dataset: tf.data.Dataset, max_num_imgs: int):
     enc_img_2048 = np.zeros((max_num_imgs, 2048))
-
     for i, batch_img in enumerate(dataset):
         batch = np.shape(batch_img)[0]
         encodings = model(batch_img)
-
         start_index = i * batch
         end_index = start_index + batch
         enc_img_2048[start_index:end_index] = encodings
-
     return enc_img_2048
 
 
@@ -42,15 +39,15 @@ def createTempDataset(paths: list, batch: int, img_height: int = None, img_width
     return dataset
 
 
-def getFIDScore(mu_real, sigma_real, mu_fake, sigma_fake):  # from mu and sigma
-    # calculate sum squared difference between means
+def getFIDScore(mu_real, sigma_real, mu_fake, sigma_fake):
+    # Here we calculate sum of the squared difference between means
     ssdiff = np.sum((mu_real - mu_fake) ** 2.0)
-    # calculate sqrt of product between cov
+    # Here we calculate the square root of product between covariances
     covmean = linalg.sqrtm(sigma_real.dot(sigma_fake))
-    # check and correct imaginary numbers from sqrt
+    # Here we check and correct imaginary numbers from square root
     if np.iscomplexobj(covmean):
         covmean = covmean.real
-    # calculate score
+    # Finally here we calculate the score
     FID_score = ssdiff + np.trace(sigma_real) + np.trace(sigma_fake) - 2 * np.trace(covmean)
     return FID_score
 
@@ -61,21 +58,16 @@ def calculateFID(inception_model,
                  batch: int = 1,
                  img_height: int = None,
                  img_width: int = None):
-    # Just to make sure we have the same number of images from both category
     imgs_num = min(len(real_paths), len(fake_paths))
     real_paths = real_paths[:imgs_num]
     fake_paths = fake_paths[:imgs_num]
-
     dataset_real = createTempDataset(real_paths, batch, img_height, img_width)
     real_encodings = getEncodings(inception_model, dataset_real, imgs_num)
     mu_real, sigma_real = getEncodingStats(real_encodings)
-
     dataset_fake = createTempDataset(fake_paths, batch, img_height, img_width)
     fake_encodings = getEncodings(inception_model, dataset_fake, imgs_num)
     mu_fake, sigma_fake = getEncodingStats(fake_encodings)
-
     FID_score = getFIDScore(mu_real, sigma_real, mu_fake, sigma_fake)
-
     return FID_score
 
 
