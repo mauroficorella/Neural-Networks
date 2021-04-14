@@ -5,21 +5,18 @@ import numpy as np
 import tensorflow as tf
 
 
+# IMAGES UTILITIES-----------------------------------------------------------------------------------------------------
 def saveImages(epoch: int, images: np.ndarray, save_path: Path, n_rows: int, n_cols: int,
                fig_dim=(10, 10), name_suff: str = ""):
     assert len(images) == (n_rows * n_cols)
-
     if not save_path.is_dir():
         save_path.mkdir(parents=True)
-
     fig, ax = plt.subplots(n_rows, n_cols, figsize=fig_dim)
     ax = ax.flatten()
-
     for i in range(len(ax)):
         image = images[i]
         ax[i].imshow(image)
         ax[i].axis('off')
-
     fig.set_tight_layout(True)
     save_path = save_path / f"{str(epoch).zfill(6)}{name_suff}.jpg"
     fig.savefig(str(save_path))
@@ -29,17 +26,15 @@ def saveImages(epoch: int, images: np.ndarray, save_path: Path, n_rows: int, n_c
 def writeImagesOnDisk(images: np.ndarray, img_folder_path: str = None) -> tuple:
     if img_folder_path is None:
         img_folder_path = Path(tempfile.mkdtemp())
-
     img_list = []
     for i in range(len(images)):
         img_path = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg", dir=str(img_folder_path)).name
         plt.imsave(img_path, images[i])
         img_list.append(img_path)
-
     return img_folder_path, img_list
 
 
-# DIFFERENTIAL AUGMENTATION COMPUTATIONS
+# DIFFERENTIAL AUGMENTATION COMPUTATIONS-------------------------------------------------------------------------------
 def differentialAugmentation(x, policy: str = None, channels_first=False):
     if policy:
         if channels_first:
