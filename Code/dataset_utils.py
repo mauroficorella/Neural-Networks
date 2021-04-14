@@ -2,14 +2,9 @@ from functools import partial
 import tensorflow as tf
 
 
-def resizeAndNormalizeImages(images, resolution: int):  # preprocess
+def resizeAndNormalizeImages(images, resolution: int):
     """
-    Resize and normalize the images tot he range [-1, 1]
-    Args:
-        images: batch of images (B, H, W, C)
-
-    Returns:
-        resized and normalized images
+    In this function we resize and normalize the images to the range [-1, 1]
     """
 
     images = tf.image.resize(images, (resolution, resolution))
@@ -39,15 +34,9 @@ def getDataset(batch: int,
     return dataset
 
 
-def denormalizeImages(images, dtype=tf.float32):  # postprocess
+def denormalizeImages(images, dtype=tf.float32): 
     """
-    De-Normalize the images to the range [0, 255]
-    Args:
-        images: batch of normalized images
-        dtype: target dtype
-
-    Returns:
-        de-normalized images
+    In this function we de-Normalize the images to the range [0, 255]
     """
 
     images = (images * 127.5) + 127.5
@@ -57,13 +46,7 @@ def denormalizeImages(images, dtype=tf.float32):  # postprocess
 
 def cropCenterImages(images, crop_target_resolution: int):
     """
-    Crops the center of the images
-    Args:
-        images: shape: (B, H, W, 3), H should be equal to W
-        crop_target_resolution: target resolution for the crop
-
-    Returns:
-        cropped images which has the shape: (B, crop_resolution, crop_resolution, 3)
+    In this function we crop the center of the images
     """
 
     crop_target_resolution = tf.cast(crop_target_resolution, tf.float32)

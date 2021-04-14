@@ -67,7 +67,7 @@ _ = [tf.config.experimental.set_memory_growth(x, True) for x in GPUs]
 G_weights = None
 D_weights = None
 
-out_folder = Path("Results") / args.out_folder_name
+out_folder = Path("./Results") / args.out_folder_name
 checkpoints_folder = out_folder / "Checkpoints"
 if out_folder.is_dir():
     G_weights = out_folder / "Checkpoints/G_checkpoint.h5"
