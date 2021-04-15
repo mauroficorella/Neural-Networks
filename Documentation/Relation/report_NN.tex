@@ -81,13 +81,13 @@ bottom=20mm]{geometry}
 	\textit{The main aim of FastGAN is to allow users with limited computing budget and resources to 
 	train a GAN. Moreover it eliminates the requirement of a big dataset for training.
 	These are big advantages since traditional GANs required a lot of GPU computational power
-	(i.e. one or more server-level GPUs with at least 16 GB of vRAM in StyleGAN2) and a large number of 
+	(i.e. one or more server-level GPUs with at least 16 GB of VRAM in StyleGAN2) and a large number of 
 	images for training. 
 	This implementation allowed to train from scratch on a NVIDIA GeForce RTX 2070 SUPER and a 
 	NVIDIA GeForce GTX 1050-Ti, obtaining good results also on a small dataset. 
 	The structure of FastGAN comprehends a Skip-Layer channel-wise Excitation (SLE) module and a self-supervised
 	Discriminator trained as a feature-encoder.\\
-	We will show, through various experiments, that this GAN outperforms StyleGAN2 in terms of computational requirements
+	This GAN outperforms StyleGAN2 and other traditional GANs in terms of computational requirements
 	and training time.
 	}
 	\end{minipage}
@@ -110,10 +110,10 @@ computational budget. More specifically, there are three main problems afflictin
 			lead to a more rigid gradient flow to optimize $G$, and since the target distribution made by images at high resolution
 			is super sparse. There was some approaches trying to solve this problem, but they led to a slightly greater computational
 			cost, consuming more GPU memory and requiring more training time;
-	\item \textit{Stabilize training}: Mode-collapse on generator $G$ is a big challenge when training GANs, given fewer training
+	\item \textit{Stabilize training}: mode-collapse on generator $G$ is a big challenge when training GANs, given fewer training
 			samples and lower computational power and budgets (smaller batch-size). $D$ is unable to provide consistent gradients to 
-			train G, since is more likely to be overfitting on the datasets. There was, also here, approaches that tryed to solve this 
-			problem, but they have limited using scenario and image domain, and worked only on low resolution images with unlimited computing
+			train $G$, since is more likely to be overfitting on the datasets. There were, also here, approaches that tryed to solve this 
+			problem, but they have limited using scenarios and image domain, and worked only on low resolution images with unlimited computing
 			resources.
 \end{itemize}
 \begin{figure}[H]
@@ -121,17 +121,17 @@ computational budget. More specifically, there are three main problems afflictin
 	\includegraphics[width=0.5\textwidth]{Images/problems.png}
 	\caption{FastGAN training challenges.} 
 \end{figure}
-In some situations a possible way to avoid these problems was the transfer-learning using pre-trained models,
+In some situations a possible way to avoid these problems was the \textit{transfer-learning} using pre-trained models,
 but this solution had the disadvantage of the lack of guarantee to find dataset compatible with the pre-training. 
-Another way was fine-tuning, but this gave even worse results in terms of performance.
+Another way was \textit{fine-tuning}, but this gave even worse results in terms of performance.
 Those approaches were not took in consideration by people who wanted to train their model from scratch, in order to 
 avoid biases typic of the fine-tuned pre-trained models; in other cases there were the necessity to train models
 with datasets containing less than 100 images.
-A possible workaround for the situation of a small dataset was dynamic data-augmentation, but the cost of SOTA models
+A possible workaround for the situation of a small dataset was \textit{dynamic data-augmentation}, but the cost of SOTA models
 remained very high.\\\\
 This paper aims to learn an unconditional GAN requiring, at the same time, low computational power and small datasets
-for training. In order to do this, FastGAN has a "fast-learning" generator $G$ and a discriminator $D$ able to continuously
-return signals very useful to train G. FastGAN reaches the above objectives based on the following two techniques:
+for training. In order to do this, FastGAN has a ``fast-learning" generator $G$ and a discriminator $D$ able to continuously
+return signals very useful to train $G$. FastGAN reaches the above objectives based on the following two techniques:
 \begin{itemize}
 	\setlength\itemsep{0.01em}
 	\item \textbf{Skip-Layer channel-wise Excitation module}: revises channel responses on high-scale feature-maps using
@@ -139,7 +139,7 @@ return signals very useful to train G. FastGAN reaches the above objectives base
 			model weights;
 	\item \textbf{Self-supervised discriminator $D$ trained as a feature-encoder with an extra decoder}: this discriminator
 			is forced to learn a feature-map that covers more regions from an image in input; in this way it gives richer
-			signals in order to train $G$. It has been shown that auto-encoding is the best self-supervision strategy for $D$.
+			signals in order to train $G$. It has been shown that \textit{auto-encoding} is the best self-supervision strategy for $D$.
 \end{itemize} 
 
 % METHOD -------------------------------------------------------------------------
@@ -167,7 +167,7 @@ strong on small datasets.
 
 In the traditional GANs the generator $G$ required more convolutional layers (and so a deeper model) to synthesize 
 high resolution images, and this led to longer training times. 
-In order to train such a deep model it was used the Residual structure (ResBlock) increasing the computational cost.
+In order to train such a deep model it was used the Residual structure (ResBlock), increasing the computational cost.
 Traditionally ResBlock implements the skip-connection as an element-wise addition between the activations from different
 convolutional layers, but with the requirement that the spatial dimensions of the activations are the same.
 Moreover, previously, skip-connections were only used within the same resolution.\\\\
@@ -175,11 +175,11 @@ FastGAN, instead, uses a different approach through the two following strategies
 \begin{itemize}
 	\setlength\itemsep{0.01em}
 	\item {	
-	In order to eliminate the complex computation of convolution, is used multiplication between activations, instead of 
+	In order to eliminate the complex computation of convolution, it is used multiplication between activations, instead of 
 	addition, giving to one side of activations the spatial dimension of $1^2$.
 	}
 	\item {
-	Instead of performing skip-connection only within the same resolution, here is performed between resolutions with a much
+	Instead of performing skip-connection only within the same resolution, here it is performed between resolutions with a much
 	longer range ($8^2$ and $128^2$, $16^2$ and $256^2$, $32^2$ and $512^2$); this follows from the fact that an equal spatial-dimension
 	is no longer required.
 	}
@@ -194,10 +194,10 @@ In function $\mathcal{F}$ there are the operations on $\mathbf{x}_{low}$; module
 are represented by $\mathbf{W}_i$; $\mathbf{x}$ is the input feature-map of the SLE module, while $\mathbf{y}$
 is its output feature-map. As shown in the \hyperref[fig:fig2]{Figure 2}, the SLE module is composed by the 
 feature-map $\mathbf{x}_{low}$ at resolution $8 \times 8$ and the feature-map $\mathbf{x}_{high}$ at resolution $128 \times 128$.\\
-First of all $\mathcal{F}$ contains an adaptive average-pooling layer that down-samples $\mathbf{x}_{low}$ into $4 \times 4$; then
-there is the convolutional-layer that further down-samples it into $1 \times 1$. Moreover non-linearity is modeled by a LeakyReLU,
+First of all, $\mathcal{F}$ contains an adaptive average-pooling layer that down-samples $\mathbf{x}_{low}$ into $4 \times 4$; then
+there is the convolutional-layer that further down-samples it into $1 \times 1$. Moreover non-linearity is modeled by a \textit{LeakyReLU},
 and after that another convolutional-layer is used to let $\mathbf{x}_{low}$ having the same channel size as $\mathbf{x}_{high}$. 
-Finally there is a Sigmoid function that does a gating operation, and then the output from $\mathcal{F}$ is multiplied with 
+Finally there is a \textit{Sigmoid} function that does a gating operation, and then the output from $\mathcal{F}$ is multiplied with 
 $\mathbf{x}_{high}$ along the channel dimension, returning $\mathbf{y}$ with the same shape as $\mathbf{x}_{high}$.\\\\
 The above Skip-Layer Excitation works between feature-maps that are far away from each other, brings the benefit of the channel-wise
 feature re-calibration and makes the whole model’s gradient flow stronger; moreover it enables the generator $G$ to automatically 
