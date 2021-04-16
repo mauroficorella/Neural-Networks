@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1618480628 "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf" "report_NN" 1618480630
-  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux" 1618480630 3882 3a018767258ce7cdf792cbe5b7de5c8b ""
-  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" 1618480628 26430 6d4ae5daeca88f9ebec908c274d2dc33 ""
+["pdflatex"] 1618585040 "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf" "report_NN" 1618585041
+  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.aux" 1618585041 3900 17eabbd5cc3d9ac6241cc083bc5d2feb ""
+  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.tex" 1618585039 26590 7ea79443de828fa46a91c1699ac199ab ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/jknappen/ec/tcrm1440.tfm" 1136768653 1536 3290a75021d32d016616fe527bc9884c ""
@@ -141,13 +141,13 @@
   "Images/panda_exp.jpg" 1616684944 365653 1247a82e2b6e37e70bff6ad2b04d304d ""
   "Images/problems.png" 1617377358 75454 9318bca547527531f5bfcdc8be4ff245 ""
   "Images/structure.png" 1617377279 136395 d0bbecbbfb49f43fee0fbee30c23a614 ""
-  "report_NN.aux" 1618480630 3882 3a018767258ce7cdf792cbe5b7de5c8b "pdflatex"
-  "report_NN.out" 1618480630 733 008c1bfa614bd0f829b68bd5d097f5ab "pdflatex"
-  "report_NN.tex" 1618480628 26430 6d4ae5daeca88f9ebec908c274d2dc33 ""
+  "report_NN.aux" 1618585041 3900 17eabbd5cc3d9ac6241cc083bc5d2feb "pdflatex"
+  "report_NN.out" 1618585041 733 008c1bfa614bd0f829b68bd5d097f5ab "pdflatex"
+  "report_NN.tex" 1618585039 26590 7ea79443de828fa46a91c1699ac199ab ""
   (generated)
-  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf"
+  "report_NN.out"
   "report_NN.log"
+  "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.pdf"
   "report_NN.pdf"
   "report_NN.aux"
-  "report_NN.out"
   "/Users/mauroficorella/Documents/GitHub/Neural-Networks/Documentation/Relation/report_NN.log"
