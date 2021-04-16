@@ -14,17 +14,10 @@ Tensorflow implementation of the paper "Towards Faster and Stabilized GAN Traini
 * In order to take the full advantage of CUDA computational power, you need a CUDA compatible hardware, CUDA toolkit 11 and cuDNN 8;
 * You can recreate our environment through the provided environment.yml file.
 
+## Usage
+Example of usage in order to start the train:
+
+`python Code/run.py --resolution 512 --batch 8 --diff-augment --FID`
 
 
-
-## Documentation
-
-For more details about how the project has been developed please refers to the [report file]().
-
-
-## Authors
-
-* **Mauro Ficorella** - [GitHub profile](https://github.com/mauroficorella)
-* **Valentina Sisti** - [GitHub profile](https://github.com/ValeSisti)
-* **Martina Turbessi** - [GitHub profile](https://github.com/martinaturbessi)
 

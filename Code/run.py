@@ -20,7 +20,7 @@ parser.add_argument("--batch", type=int, default=1,
                          "either on 1,2 or 4).")
 parser.add_argument("--epochs", type=int, default=1000,
                     help="Epoch number to use during the training.")
-parser.add_argument("--dataset-folder", type=str, required=True, help="Folder containing the dataset images.")
+parser.add_argument("--dataset-folder", type=str, default="Dataset", required=True, help="Folder containing the dataset images.")
 parser.add_argument("--out-folder-name", type=str, default="Experiment",
                     help="Name of the output folder regarding the current experiment.")
 parser.add_argument("--overwrite", action="store_true",

@@ -1,5 +1,3 @@
-python Code/run.py --dataset-folder Dataset/panda --out-folder-name pandabatch4res256epochs1000 --resolution 256 --batch 4 --diff-augment --FID --FID-num-of-imgs 256
-python Code/train.py --data-folder dataset/dogs --name dogsbatch8res256epochs1000 --resolution 256 --batch-size 8 --diff-augment --fid --fid-number-of-images 256
-python Code/train.py --data-folder dataset/obama --name obama256batch8epochs1500 --resolution 256 --batch-size 8 --diff-augment --fid --fid-number-of-images 256
+Example on how to run the code:
 
-chiudere il terminale e riaprirne un altro per liberare memoria
+python Code/run.py --dataset-folder dataset --out-folder-name pandabatch4res256epochs1000 --resolution 256 --batch 4 --diff-augment --FID --FID-num-of-imgs 256
